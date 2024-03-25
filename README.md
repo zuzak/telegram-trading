@@ -16,3 +16,5 @@ then install and run:
 $ npm install
 $ npm start
 ```
+
+To allow the bot to view messages in groups, you'll need to tell BotFather to disable privacy mode.

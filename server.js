@@ -1,7 +1,17 @@
-/*
- * server.js
- * Copyright (C) 2024 zuzak <zuzak@saraneth>
- *
- * Distributed under terms of the MIT license.
- */
-const client = require('./client.js')()
+const { NewMessage } = require('telegram/events')
+const main = async () => {
+  const client = await require('./client.js')()
+
+  client.addEventHandler(async (event) => {
+    const msg = event.message
+    const sender = await msg.getSender()
+    console.log(
+      new Date(msg.date * 1000),
+      sender.username ? `‹@${sender.username}›` : `«${msg.firstName} ${msg.lastName}»`,
+      msg.message
+    )
+  }, new NewMessage())
+
+}
+
+main()
