@@ -11,7 +11,6 @@ const main = async () => {
       msg.message
     )
   }, new NewMessage())
-
 }
 
 main()
