@@ -1,0 +1,16 @@
+{
+  "name": "client2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "convict": "^6.2.4",
+    "telegram": "^2.20.2"
+  }
+}
