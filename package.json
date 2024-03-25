@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
     "convict": "^6.2.4",
     "telegram": "^2.20.2"
   }

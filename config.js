@@ -16,12 +16,15 @@ const config = convict({
     env: 'NODE_ENV'
   },
   trading212: {
-    endpoint: {
+    env: {
       doc: 'The Trading212 endpoint to use',
-      default: 'https://demo.trading212.com',
+      format: ['demo', 'live'],
+      default: 'demo'
     },
-    key: {
+    apiKey: {
       doc: 'The Trading212 API key to use',
+      default: undefined,
+      format: isBase64
     }
   },
   telegram: {
