@@ -1,4 +1,4 @@
-const { TelegramClient, Logger } = require('telegram')
+const { TelegramClient } = require('telegram')
 const { StringSession } = require('telegram/sessions')
 
 const config = require('./config.js')
