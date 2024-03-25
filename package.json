@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "standard",
     "start": "node server.js"
   },
   "author": "",
@@ -13,5 +13,8 @@
     "axios": "^1.6.8",
     "convict": "^6.2.4",
     "telegram": "^2.20.2"
+  },
+  "devDependencies": {
+    "standard": "^17.1.0"
   }
 }
