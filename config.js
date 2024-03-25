@@ -2,6 +2,7 @@ const convict = require('convict')
 
 const isBase64 = (value) => {
   try {
+    /* global aotb */
     aotb(value)
     return true
   } catch (e) {
@@ -55,7 +56,7 @@ const config = convict({
     },
     logLevel: {
       doc: 'The log level of the internal Telegram library',
-      format: [ 'none', 'error', 'warn', 'info', 'debug' ],
+      format: ['none', 'error', 'warn', 'info', 'debug'],
       default: 'debug'
     }
   }
@@ -63,6 +64,6 @@ const config = convict({
 
 const env = config.get('env')
 config.loadFile(`${env}.json`)
-config.validate({allowed: 'strict'})
+config.validate({ allowed: 'strict' })
 
 module.exports = config
