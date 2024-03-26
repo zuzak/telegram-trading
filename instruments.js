@@ -31,6 +31,6 @@ const _ = module.exports = {
     })
   },
   getInstrumentNames: async (name) => {
-    return Object.keys(await _.getInstrumentsKeyed).sort((a, b) => b.length - a.length)
+    return Object.keys(await _.getInstrumentsKeyed()).sort((a, b) => a.length - b.length)
   }
 }

@@ -86,3 +86,14 @@ test('getInstrumentsKeyed should clobber on collisions', async () => {
     c: { name: 'c', ticker: 'z' }
   })
 })
+test('getInstrumentNames should be in order', async () => {
+  const data = [
+    { name: 'alice' },
+    { name: 'bob' },
+    { name: 'christine' }
+  ]
+  axios.get.mockImplementationOnce(() => Promise.resolve({ data }))
+
+  const output = await instruments.getInstrumentNames()
+  expect(output).toStrictEqual(['bob', 'alice', 'christine'])
+})
