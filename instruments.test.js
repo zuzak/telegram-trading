@@ -112,8 +112,8 @@ test('instrument lookup retries on rate-limit', async () => {
     .mockImplementationOnce(() => Promise.reject({ response: { status: 429 }}))
     .mockImplementationOnce(() => Promise.resolve({ data }))
 
-  const output = instruments.getInstruments()
+  const output = await instruments.getInstruments()
 
   expect(setTimeout).toHaveBeenCalledTimes(1)
-  expect(await output).toStrictEqual(data)
+  expect(output).toStrictEqual(data)
 })
