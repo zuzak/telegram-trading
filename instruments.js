@@ -1,6 +1,6 @@
 const t212 = require('./t212.js')
 
-module.exports = {
+const _ = module.exports = {
   getInstruments: async () => {
     try {
       const res = await t212.get('equity/metadata/instruments')
@@ -17,5 +17,20 @@ module.exports = {
       console.log('Trying again to get instruments')
       return this.getInstruments()
     }
+  },
+  getInstrumentsByName: async (name) => {
+    const instruments = await _.getInstruments()
+    return instruments.filter((x) => x.name == name)
+  },
+  getInstrumentsKeyed: async (name) => {
+    const instruments = (await _.getInstruments())
+    instruments.unshift({}) // add something empty to the start to accumulate onto
+    return instruments.reduce((acc, curr) => {
+      acc[curr.name] = curr
+      return acc
+    })
+  },
+  getInstrumentNames: async (name) => {
+    return Object.keys(await _.getInstrumentsKeyed).sort((a, b) => b.length - a.length)
   }
 }
