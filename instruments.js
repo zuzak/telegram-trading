@@ -20,7 +20,7 @@ const _ = module.exports = {
   },
   getInstrumentsByName: async (name) => {
     const instruments = await _.getInstruments()
-    return instruments.filter((x) => x.name == name)
+    return instruments.filter((x) => x.name === name)
   },
   getInstrumentsKeyed: async (name) => {
     const instruments = (await _.getInstruments())
