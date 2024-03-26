@@ -16,6 +16,7 @@
     "telegram": "^2.20.2"
   },
   "devDependencies": {
+    "@fastify/pre-commit": "^2.1.0",
     "axios-mock-adapter": "^1.22.0",
     "jest": "^29.7.0",
     "standard": "^17.1.0"
