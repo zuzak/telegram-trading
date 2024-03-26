@@ -1,3 +1,4 @@
+const { expect, jest, test, describe } = require('@jest/globals')
 const instruments = require('./instruments.js')
 
 const axios = require('axios')
@@ -26,7 +27,7 @@ describe('instrument lookup', () => {
   test('retries on rate-limit', async () => {
     // jest has fancy timer mocking but it doesn't work well with async/await
     // so let's replace the setTimeout function to one that returns immediately every time:
-    global.setTimeout = jest.fn(cb => cb());
+    global.setTimeout = jest.fn(cb => cb())
     jest.spyOn(global, 'setTimeout')
 
     const data = ['a']
@@ -34,7 +35,7 @@ describe('instrument lookup', () => {
     // mock axios to return 429 the first time it's called
     // and then some data the second time
     axios.get
-      .mockImplementationOnce(() => Promise.reject({ response: { status: 429 }}))
+      .mockImplementationOnce(() => Promise.reject({ response: { status: 429 } })) // eslint-disable-line prefer-promise-reject-errors
       .mockImplementationOnce(() => Promise.resolve({ data }))
 
     const output = await instruments.getInstruments()
@@ -43,10 +44,10 @@ describe('instrument lookup', () => {
     expect(output).toStrictEqual(data)
   })
   test('bails on other errors', async () => {
-    global.setTimeout = jest.fn(cb => cb());
+    global.setTimeout = jest.fn(cb => cb())
     jest.spyOn(global, 'setTimeout')
 
-    const e = {response: {status: 400}}
+    const e = { response: { status: 400 } }
 
     axios.get.mockImplementationOnce(() => Promise.reject(e))
 
