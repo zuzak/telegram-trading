@@ -42,6 +42,22 @@ describe('instrument lookup', () => {
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(output).toStrictEqual(data)
   })
+  test('bails on other errors', async () => {
+    global.setTimeout = jest.fn(cb => cb());
+    jest.spyOn(global, 'setTimeout')
+
+    const e = {response: {status: 400}}
+
+    axios.get.mockImplementationOnce(() => Promise.reject(e))
+
+    expect.assertions(2)
+    try {
+      await instruments.getInstruments()
+    } catch (error) {
+      expect(error).toStrictEqual(e)
+    }
+    expect(setTimeout).toHaveBeenCalledTimes(0)
+  })
 })
 describe('instrument name search', () => {
   test('works with one hit', async () => {
