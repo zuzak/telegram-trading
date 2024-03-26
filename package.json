@@ -20,5 +20,9 @@
     "axios-mock-adapter": "^1.22.0",
     "jest": "^29.7.0",
     "standard": "^17.1.0"
-  }
+  },
+  "pre-commit": [
+    "lint",
+    "test"
+  ]
 }
