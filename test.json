@@ -1,0 +1,12 @@
+{
+  "telegram": {
+    "apiId": 0,
+    "apiHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "botToken": "0000000000:xxxxxxxxxxxxxxxxxx-XXXXXXXXXXXXXXXX",
+    "stringSession": "ABCDEF",
+    "logLevel": "debug"
+  },
+  "trading212": {
+    "apiKey": null
+  }
+}
