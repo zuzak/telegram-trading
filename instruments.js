@@ -15,7 +15,7 @@ const _ = module.exports = {
       // ^ probably a better way to do that
 
       console.log('Trying again to get instruments')
-      return this.getInstruments()
+      return _.getInstruments()
     }
   },
   getInstrumentsByName: async (name) => {

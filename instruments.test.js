@@ -97,3 +97,23 @@ test('getInstrumentNames should be in order', async () => {
   const output = await instruments.getInstrumentNames()
   expect(output).toStrictEqual(['bob', 'alice', 'christine'])
 })
+
+jest.spyOn(global, 'setTimeout')
+test('instrument lookup retries on rate-limit', async () => {
+  // jest has fancy timer mocking but it doesn't work well with async/await
+  // so let's replace the setTimeout function to one that returns immediately every time:
+  global.setTimeout = jest.fn(cb => cb());
+
+  const data = ['a']
+
+  // mock axios to return 429 the first time it's called
+  // and then some data the second time
+  axios.get
+    .mockImplementationOnce(() => Promise.reject({ response: { status: 429 }}))
+    .mockImplementationOnce(() => Promise.resolve({ data }))
+
+  const output = instruments.getInstruments()
+
+  expect(setTimeout).toHaveBeenCalledTimes(1)
+  expect(await output).toStrictEqual(data)
+})
