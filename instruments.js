@@ -23,7 +23,7 @@ const _ = module.exports = {
     const instruments = await _.getInstruments()
     return instruments.filter((x) => x.name === name)
   },
-  getInstrumentsKeyed: async (name) => {
+  getInstrumentsKeyed: async () => {
     const instruments = (await _.getInstruments())
     instruments.unshift({}) // add something empty to the start to accumulate onto
     return instruments.reduce((acc, curr) => {
@@ -33,5 +33,12 @@ const _ = module.exports = {
   },
   getInstrumentNames: async (name) => {
     return Object.keys(await _.getInstrumentsKeyed()).sort((a, b) => a.length - b.length)
+  },
+  searchStringForInstruments: async (string) => {
+    const instrumentNames = await _.getInstrumentNames()
+
+    const iName = instrumentNames.find((x) => (new RegExp(x)).test(string))
+
+    return _.getInstrumentsByName(iName)
   }
 }

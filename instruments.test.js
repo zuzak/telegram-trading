@@ -91,6 +91,20 @@ describe('instrument name search', () => {
       { name: 'a', shortName: 'AC' }
     ])
   })
+  test('works with no hits', async () => {
+    const data = [
+      { name: 'a', shortName: 'AA' },
+      { name: 'b', shortName: 'BB' },
+      { name: 'a', shortName: 'AB' },
+      { name: 'c', shortName: 'CC' },
+      { name: 'a', shortName: 'AC' }
+    ]
+
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data }))
+
+    const output = await instruments.getInstrumentsByName('z')
+    expect(output).toStrictEqual([])
+  })
 })
 describe('keyed instruments', () => {
   test('should convert an array of objects into key-values', async () => {
@@ -137,5 +151,28 @@ describe('keyed instruments', () => {
 
     const output = await instruments.getInstrumentNames()
     expect(output).toStrictEqual(['bob', 'alice', 'christine'])
+  })
+})
+
+describe('instrument search', () => {
+  test.each([
+    ['works at the start', 'Bbb test test', ['y']],
+    ['works in the middle', 'Test Bbb test', ['y']],
+    ['works at the end', 'Test test Bbb', ['y']],
+    ['works with no hits', 'Test test test', []],
+    ['works with multiple securities with the same name', 'Aaa', ['x', 'z']]
+  ])('%s', async (definition, searchString, expectedResponse) => {
+    const i = [
+      { name: 'Aaa', ticker: 'x' },
+      { name: 'Bbb', ticker: 'y' },
+      { name: 'Aaa', ticker: 'z' },
+      { name: 'Ccc', ticker: 'f' }
+    ]
+    axios.get.mockImplementation(() => Promise.resolve({ data: i }))
+
+    const response = await instruments.searchStringForInstruments(searchString)
+    const tickersInResponse = response.map((x) => x.ticker)
+
+    expect(tickersInResponse).toEqual(expectedResponse)
   })
 })
