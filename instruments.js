@@ -1,12 +1,16 @@
 const t212 = require('./t212.js')
 
+let cache
+
 const _ = module.exports = {
   /**
    * List all instruments our account has access to.
    */
   getInstruments: async () => {
+    if (cache) return cache
     try {
       const res = await t212.get('equity/metadata/instruments')
+      if (process.env.NODE_ENV !== 'test') cache = res.data
       return res.data
     } catch (e) {
       // We're only allowed to call this endpoint 1 in every 30s
