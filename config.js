@@ -59,6 +59,18 @@ const config = convict({
       format: ['none', 'error', 'warn', 'info', 'debug'],
       default: 'debug'
     }
+  },
+  sentiment: {
+    language: {
+      doc: 'The language of the messages to analyse: see https://naturalnode.github.io/natural/stemmers.html',
+      format: String,
+      default: 'English'
+    },
+    vocabulary: {
+      doc: 'The sentiment analysis vocabulary to use: see https://naturalnode.github.io/natural/sentiment_analysis.html',
+      format: ['afinn', 'senticon', 'pattern'],
+      default: 'afinn'
+    }
   }
 })
 
