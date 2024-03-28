@@ -37,8 +37,9 @@ const _ = module.exports = {
   searchStringForInstruments: async (string) => {
     const instrumentNames = await _.getInstrumentNames()
 
-    const iName = instrumentNames.find((x) => (new RegExp(x)).test(string))
+    const matchingInstrumentNames = instrumentNames.filter((x) => (new RegExp(x)).test(string))
+    const matchingInstruments = matchingInstrumentNames.map((x) => _.getInstrumentsByName(x))
 
-    return _.getInstrumentsByName(iName)
+    return (await Promise.all(matchingInstruments)).flat()
   }
 }

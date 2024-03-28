@@ -160,7 +160,9 @@ describe('instrument search', () => {
     ['works in the middle', 'Test Bbb test', ['y']],
     ['works at the end', 'Test test Bbb', ['y']],
     ['works with no hits', 'Test test test', []],
-    ['works with multiple securities with the same name', 'Aaa', ['x', 'z']]
+    ['works with multiple securities with the same name', 'Aaa', ['x', 'z']],
+    ['works with multiple securities with different names', 'Ccc test Bbb', ['y', 'f']], // TODO: make these sets I guess
+    ['works with multiple securities with both different and the same names', 'Ccc Aaa Bbb', ['x', 'z', 'y', 'f']]
   ])('%s', async (definition, searchString, expectedResponse) => {
     const i = [
       { name: 'Aaa', ticker: 'x' },
