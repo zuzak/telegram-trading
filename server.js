@@ -1,4 +1,5 @@
 const { NewMessage } = require('telegram/events')
+const instruments = require('./instruments.js')
 const main = async () => {
   const client = await require('./client.js')()
 
@@ -8,7 +9,8 @@ const main = async () => {
     console.log(
       new Date(msg.date * 1000),
       sender.username ? `‹@${sender.username}›` : `«${msg.firstName} ${msg.lastName}»`,
-      msg.message
+      msg.message,
+      await instruments.searchStringForInstruments(msg.message)
     )
   }, new NewMessage())
 }
