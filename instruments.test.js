@@ -115,7 +115,7 @@ describe('keyed instruments', () => {
     ]
     axios.get.mockImplementationOnce(() => Promise.resolve({ data }))
 
-    const output = await instruments.getInstrumentsKeyed()
+    const output = await instruments.getInstrumentsKeyedByName()
     expect(output).toStrictEqual({
       a: { name: 'a' },
       b: { name: 'b' },
@@ -134,7 +134,7 @@ describe('keyed instruments', () => {
     ]
     axios.get.mockImplementationOnce(() => Promise.resolve({ data }))
 
-    const output = await instruments.getInstrumentsKeyed()
+    const output = await instruments.getInstrumentsKeyedByName()
     expect(output).toStrictEqual({
       a: { name: 'a', ticker: 'x' },
       b: { name: 'b', ticker: 'y' },

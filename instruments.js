@@ -1,6 +1,9 @@
 const t212 = require('./t212.js')
 
 const _ = module.exports = {
+  /**
+   * List all instruments our account has access to.
+   */
   getInstruments: async () => {
     try {
       const res = await t212.get('equity/metadata/instruments')
@@ -19,11 +22,18 @@ const _ = module.exports = {
       return _.getInstruments()
     }
   },
+  /**
+   * Returns an array of instruments with a given name.
+   */
   getInstrumentsByName: async (name) => {
     const instruments = await _.getInstruments()
     return instruments.filter((x) => x.name === name)
   },
-  getInstrumentsKeyed: async () => {
+  /**
+   * Returns a key-value object of instruments keyed by their name.
+   * If there's duplicate names, they'll get globbed.
+   */
+  getInstrumentsKeyedByName: async () => {
     const instruments = (await _.getInstruments())
     instruments.unshift({}) // add something empty to the start to accumulate onto
     return instruments.reduce((acc, curr) => {
@@ -31,9 +41,15 @@ const _ = module.exports = {
       return acc
     })
   },
+  /**
+   * Returns an array of all the available instrument names.
+   */
   getInstrumentNames: async (name) => {
-    return Object.keys(await _.getInstrumentsKeyed()).sort((a, b) => a.length - b.length)
+    return Object.keys(await _.getInstrumentsKeyedByName()).sort((a, b) => a.length - b.length)
   },
+  /**
+   * Searches a given string and returns all the securities possibly mentioned within.
+   */
   searchStringForInstruments: async (string) => {
     const instrumentNames = await _.getInstrumentNames()
 
