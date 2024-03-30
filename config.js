@@ -76,6 +76,11 @@ const config = convict({
     reportingChannel: {
       format: Number,
       default: -4104361289
+    },
+    sentimentThreshold: {
+      doc: 'The strength of sentiment analysis under which to ignore messages',
+      format: Number,
+      default: 0.2
     }
   }
 })

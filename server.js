@@ -38,6 +38,17 @@ const main = async () => {
       { message: mentionSummary, linkPreview: false }
     )
 
+    if (Math.abs(senti) > config.get('transactions.sentimentThreshold')) {
+      client.editMessage(
+        config.get('transactions.reportingChannel'),
+        {
+          message: (await transactionMessage).id,
+          text: [mentionSummary, '🥱 <b>Not transacting:</b> emotion not strong enough'].join('\r\n')
+        }
+      )
+      return
+    }
+
     const quantity = Math.sign(senti)
     if (quantity === 0) return
 
