@@ -1,4 +1,5 @@
 const t212 = require('./t212.js')
+const config = require('./config.js')
 const _ = module.exports = {
   /**
    * Returns formatted username or equivalent given a Telegram user object
@@ -22,14 +23,15 @@ const _ = module.exports = {
   /**
    * Outputs a nicely formatted summary of a stock mention
    */
-  generateMentionSummary: (user, message, instrument) => {
+  generateMentionSummary: (user, message, instrument, sentiment) => {
     return [
       _.formatUsername(user),
       'mentioned',
       instrument.name,
       `$${instrument.shortName}`, // double $$ intentional (it's a cashtag)
-      `<blockquote>${_.underlineMessage(message, instrument.name)}</blockquote>`
-    ].join(' ')
+      `<blockquote>${_.underlineMessage(message, instrument.name)}</blockquote>`,
+      sentiment ? `<code>${sentiment.toFixed(3)}</code>` : ''
+    ].filter(Boolean).join(' ')
   },
   /**
    * Outputs a nicely formatted summary of an order status
@@ -47,6 +49,7 @@ const _ = module.exports = {
     // this should probably be somewhere else
     const cash = (await t212.get('equity/account/cash')).data
     const fmt = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' })
+    const fictionality = config.get('trading212.env') === 'demo' ? 'fictional' : '<u>real</u>'
     console.dir(cash)
     const emoji = {
       1: '📈',
@@ -54,7 +57,17 @@ const _ = module.exports = {
       0: '🏛️'
     }[Math.sign(cash.ppl)]
     switch (variant) {
-      case 'tickerline':
+      case 'paragraph':
+        return [
+          `Our ${fictionality} account value is ${fmt.format(cash.total)}.`,
+          'We started with £10,000.',
+          '',
+          `We have ${fmt.format(cash.invested)} invested right now.`,
+          `That's a return of ${emoji} ${fmt.format(cash.ppl)}.`,
+          '',
+          `We have ${fmt.format(cash.free)} ${fictionality} cash left to spend, with a realised result of ${fmt.format(cash.result)}.`
+        ].join('\r\n')
+      case 'line':
         return [
           emoji,
           `${fmt.format(cash.invested)} invested`,

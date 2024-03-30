@@ -9,6 +9,17 @@ const config = require('./config.js')
 const main = async () => {
   const client = await require('./client.js')()
 
+  // Telegram /command handling
+  client.addEventHandler(async (event) => {
+    if (!event.message) return
+    if (event.message.message === '/accountcash') {
+      return event.message.reply({
+        message: await formatters.generateCashSummary('paragraph')
+      })
+    }
+  }, new NewMessage())
+
+  // Transaction handling
   client.addEventHandler(async (event) => {
     client.invoke(
       new Api.messages.SetTyping({
@@ -31,7 +42,7 @@ const main = async () => {
     const transactingInstrument = orders.selectInstrument(await possibleInstruments)
     if (!transactingInstrument) return
 
-    const mentionSummary = formatters.generateMentionSummary(sender, msg.message, transactingInstrument)
+    const mentionSummary = formatters.generateMentionSummary(sender, msg.message, transactingInstrument, senti)
 
     const transactionMessage = client.sendMessage(
       config.get('transactions.reportingChannel'),
