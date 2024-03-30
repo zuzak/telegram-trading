@@ -27,7 +27,7 @@ const _ = module.exports = {
     return [
       _.formatUsername(user),
       'mentioned',
-      instrument.name,
+      `<a href="https://markets.ft.com/data/equities/tearsheet/summary?s=${instrument.isin}">${instrument.name}</a>`,
       `$${instrument.shortName}`, // double $$ intentional (it's a cashtag)
       `<blockquote>${_.underlineMessage(message, instrument.name)}</blockquote>`,
       sentiment ? `<code>${sentiment.toFixed(3)}</code>` : ''
