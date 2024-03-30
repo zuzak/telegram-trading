@@ -49,7 +49,7 @@ const main = async () => {
       { message: mentionSummary, linkPreview: false }
     )
 
-    if (Math.abs(senti) > config.get('transactions.sentimentThreshold')) {
+    if (Math.abs(senti) < config.get('transactions.sentimentThreshold')) {
       client.editMessage(
         config.get('transactions.reportingChannel'),
         {
