@@ -71,6 +71,12 @@ const config = convict({
       format: ['afinn', 'senticon', 'pattern'],
       default: 'afinn'
     }
+  },
+  transactions: {
+    reportingChannel: {
+      format: Number,
+      default: -4104361289
+    }
   }
 })
 

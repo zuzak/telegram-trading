@@ -13,7 +13,6 @@ client.setLogLevel(config.get('telegram.logLevel'))
 
 module.exports = async () => {
   await client.start({ botAuthToken: config.get('telegram.botToken') })
-  console.log('a')
   if (!config.get('telegram.stringSession')) {
     config.set('telegram.stringSession', client.session.save())
     console.log('Set telegram.stringSession in the config to speed up logins:')
@@ -24,6 +23,8 @@ module.exports = async () => {
     if (!client.connected) await client.connect()
     if (client.checkAuthorization()) await client.getMe()
   }, config.get('telegram.heartbeatInterval'))
+
+  client.setParseMode('html')
 
   return client
 }

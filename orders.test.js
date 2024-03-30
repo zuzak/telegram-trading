@@ -35,3 +35,9 @@ describe('describe orders', () => {
     expect(output).toStrictEqual(exampleOrder)
   })
 })
+describe('order picker', () => {
+  test('returns the first order', () => {
+    const x = ['a', 'b']
+    expect(orders.selectInstrument(x)).toBe('a')
+  })
+})

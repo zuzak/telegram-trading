@@ -10,5 +10,6 @@ module.exports = {
   getOrder: async (id) => {
     const res = await t212.get(`equity/orders/${id}`)
     return res.data
-  }
+  },
+  selectInstrument: (orders) => orders.shift()
 }
