@@ -83,6 +83,24 @@ const main = async () => {
       })
     )
   }, new NewMessage())
+
+  const updateCash = async () => {
+    const cash = formatters.generateCashSummary('emoji')
+    try {
+      await client.invoke(
+        new Api.channels.EditTitle({
+          peer: config.get('transactions.reportingChannel'),
+          about: (await cash) + ' TrashZone Trading'
+        })
+      ).catch(() => null)
+    } catch (e) {
+      if (e.errorMessage === 'CHAT_NOT_MODIFIED') return
+      throw e
+    } finally {
+      setTimeout(updateCash, 1000 * 60 * 5)
+    }
+  }
+  updateCash()
 }
 
 main()
