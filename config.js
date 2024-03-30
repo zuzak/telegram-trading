@@ -74,8 +74,8 @@ const config = convict({
   },
   transactions: {
     reportingChannel: {
-      format: BigInt,
-      default: BigInt(-1002122625485)
+      format: Number,
+      default: -1002122625485
     },
     sentimentThreshold: {
       doc: 'The strength of sentiment analysis under which to ignore messages',
