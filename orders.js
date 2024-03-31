@@ -32,5 +32,34 @@ module.exports = {
     const res = await t212.get(`equity/orders/${id}`)
     return res.data
   },
-  selectInstrument: (orders) => orders.shift()
+  /**
+   * Given an array of possible interesting instruments,
+   * pick the best one to transact.
+   */
+  selectInstrument: (instruments) => {
+    instruments.sort((a, b) => {
+      let acc = 0
+      /*
+       * The algorithm at the moment is thus:
+       *  - prioritise GBP to avoid forex fees
+       *  - if no GBP, priorise USD as we have a lot of that
+       *  - otherwise pick the oldest
+       *
+       *  Future sorts could include things like:
+       *  - whether we own any of the instrument already
+       *  - prioritising certain exchanges
+       *  - prioritising markets that are open
+       */
+      if (a.currencyCode === 'GBP') acc += 100
+      if (b.currencyCode === 'GBP') acc -= 100
+
+      if (a.currencyCode === 'USD') acc += 10
+      if (b.currencyCode === 'USD') acc -= 10
+
+      if (acc !== 0) return acc
+
+      return new Date (a.date) - new Date(b.date)
+    })
+    return instruments.pop()
+  }
 }

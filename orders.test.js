@@ -44,8 +44,31 @@ describe('describe orders', () => {
   })
 })
 describe('order picker', () => {
-  test('returns the first order', () => {
-    const x = ['a', 'b']
-    expect(orders.selectInstrument(x)).toBe('a')
+  test('prioritises GBP', () => {
+    const x = [
+      {currencyCode: 'EUR', ticker: 'A'},
+      {currencyCode: 'GBP', ticker: 'B'},
+      {currencyCode: 'USD', ticker: 'C'}
+    ]
+    const instrument = orders.selectInstrument(x)
+    expect(instrument.ticker).toBe('B')
+  })
+  test('prioritises USD', () => {
+    const x = [
+      {currencyCode: 'USD', ticker: 'A'},
+      {currencyCode: 'JPY', ticker: 'B'},
+      {currencyCode: 'EUR', ticker: 'C'}
+    ]
+    const instrument = orders.selectInstrument(x)
+    expect(instrument.ticker).toBe('A')
+  })
+  test('picks oldest', () => {
+    const x = [
+      {currencyCode: 'CAD', ticker: 'A', addedOn: '2019-08-24T14:15:22Z'},
+      {currencyCode: 'JPY', ticker: 'B', addedOn: '2021-03-01T12:00:33Z'},
+      {currencyCode: 'EUR', ticker: 'C', addedOn: '2009-01-01T04:32:00Z'}
+    ]
+    const instrument = orders.selectInstrument(x)
+    expect(instrument.ticker).toBe('C')
   })
 })
