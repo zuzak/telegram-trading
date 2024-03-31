@@ -81,6 +81,14 @@ const config = convict({
       doc: 'The strength of sentiment analysis under which to ignore messages',
       format: Number,
       default: 0.2
+    },
+    defaultExpiry: {
+      doc: 'The type of expiry to set on limit orders unless otherwise specified',
+      format: [
+        'GTC', // Good 'Til Cancelled
+        'DAY' // End of trading day
+      ],
+      default: 'GTC'
     }
   }
 })

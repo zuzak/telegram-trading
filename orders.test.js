@@ -27,6 +27,14 @@ describe('market orders', () => {
     expect(output).toStrictEqual(exampleOrder)
   })
 })
+describe('market orders', () => {
+  test('returns stuff on success', async () => {
+    axios.post.mockImplementationOnce(() => Promise.resolve({ data: exampleOrder }))
+
+    const output = await orders.placeLimitOrder('AAPL_US_EQ', 1, 1)
+    expect(output).toStrictEqual(exampleOrder)
+  })
+})
 describe('describe orders', () => {
   test('returns stuff on success', async () => {
     axios.get.mockImplementationOnce(() => Promise.resolve({ data: exampleOrder }))
