@@ -42,7 +42,7 @@ const main = async () => {
     const transactingInstrument = orders.selectInstrument(await possibleInstruments)
     if (!transactingInstrument) return
 
-    const mentionSummary = formatters.generateMentionSummary(sender, msg.message, transactingInstrument, senti)
+    const mentionSummary = formatters.generateMentionSummary(sender, msg, transactingInstrument, senti)
 
     const transactionMessage = client.sendMessage(
       config.get('transactions.reportingChannel'),
@@ -82,6 +82,7 @@ const main = async () => {
         config.get('transactions.reportingChannel'),
         {
           message: (await transactionMessage).id,
+          linkPreview: false,
           text: [mentionSummary, append].join('\r\n')
         }
       )

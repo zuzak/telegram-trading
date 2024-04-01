@@ -8,6 +8,14 @@ const _ = module.exports = {
     if (user.username) return `@${user.username}`
     return `${user.firstName} ${user.lastName}`
   },
+  getTMeUrl: (msg) => {
+    console.dir(msg)
+    try {
+      return `https://t.me/c/${msg.peerId.channelId}/${msg.id}`
+    } catch (e) {
+      return ''
+    }
+  },
   /**
    * Wraps substr in str in underline formatting
    */
@@ -26,10 +34,10 @@ const _ = module.exports = {
   generateMentionSummary: (user, message, instrument, sentiment) => {
     return [
       _.formatUsername(user),
-      'mentioned',
+      `<a href="${_.getTMeUrl(message)}">mentioned</a>`,
       `<a href="https://markets.ft.com/data/equities/tearsheet/summary?s=${instrument.isin}">${instrument.name}</a>`,
       `$${instrument.shortName}`, // double $$ intentional (it's a cashtag)
-      `<blockquote>${_.underlineMessage(message, instrument.name)}</blockquote>`,
+      `<blockquote>${_.underlineMessage(message.message, instrument.name)}</blockquote>`,
       sentiment ? `<code>${sentiment.toFixed(3)}</code>` : ''
     ].filter(Boolean).join(' ')
   },
