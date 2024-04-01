@@ -53,12 +53,18 @@ module.exports = {
       if (a.currencyCode === 'GBP') acc += 100
       if (b.currencyCode === 'GBP') acc -= 100
 
+      if (a.currencyCode === 'GBX') acc += 100
+      if (b.currencyCode === 'GBX') acc -= 100
+
       if (a.currencyCode === 'USD') acc += 10
       if (b.currencyCode === 'USD') acc -= 10
 
+      if (a.type === 'STOCK') acc += 1
+      if (b.type === 'STOCK') acc -= 1
+
       if (acc !== 0) return acc
 
-      return new Date (a.date) - new Date(b.date)
+      return new Date(a.date) - new Date(b.date)
     })
     return instruments.pop()
   }
