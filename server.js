@@ -65,11 +65,15 @@ const main = async () => {
       return
     }
 
-    const quantity = Math.sign(senti)
+    let quantity = Math.sign(senti)
     if (quantity === 0) return
 
     let append
     try {
+      if (transactingInstrument.currencyCode === 'GBX') {
+        // if denominated in pence multiply by 100 as a quick way to make it "US-like"
+        quantity = quantity * 100
+      }
       const order = await orders.placeMarketOrder(transactingInstrument.ticker, quantity)
       append = formatters.generateOrderSummary(order)
     } catch (err) {
