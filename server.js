@@ -50,11 +50,16 @@ const main = async () => {
     )
 
     if (Math.abs(senti) < config.get('transactions.sentimentThreshold')) {
+      const yawnEmoji = senti === 0 ? '😪' : '🥱'
       client.editMessage(
         config.get('transactions.reportingChannel'),
         {
           message: (await transactionMessage).id,
-          text: [mentionSummary, '🥱 <b>Not transacting:</b> emotion not strong enough'].join('\r\n')
+          linkPreview: false,
+          text: [
+            mentionSummary,
+            `${yawnEmoji} <b>Not transacting:</b> emotion not strong enough`
+          ].join('\r\n')
         }
       )
       return
