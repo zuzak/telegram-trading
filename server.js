@@ -5,19 +5,13 @@ const sentiment = require('./sentiment.js')
 const orders = require('./orders.js')
 const formatters = require('./formatters.js')
 const config = require('./config.js')
+const commands = require('./commands.js')
 
 const main = async () => {
   const client = await require('./client.js')()
 
   // Telegram /command handling
-  client.addEventHandler(async (event) => {
-    if (!event.message) return
-    if (event.message.message === '/accountcash') {
-      return event.message.reply({
-        message: await formatters.generateCashSummary('paragraph')
-      })
-    }
-  }, new NewMessage())
+  commands(client)
 
   // Transaction handling
   client.addEventHandler(async (event) => {
