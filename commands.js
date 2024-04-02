@@ -1,4 +1,5 @@
 const { Api } = require('telegram')
+const { getOrders } = require('./orders.js')
 const { NewMessage } = require('telegram/events')
 const formatters = require('./formatters.js')
 const { execSync } = require('node:child_process')
@@ -37,6 +38,13 @@ const commands = {
   accountcash: {
     desc: 'Get a summary of our current cash holdings',
     cmd: async (message) => message.reply({ message: await formatters.generateCashSummary('paragraph') })
+  },
+  openorders: {
+    desc: 'List all orders waiting for fulfillment',
+    cmd: async () => {
+      const json = await getOrders()
+      return `<pre language="json">${JSON.stringify(json, null, 4)}</pre>`
+    }
   },
   version: {
     desc: 'Get the version information of the bot',
