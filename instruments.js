@@ -62,5 +62,15 @@ const _ = module.exports = {
     const matchingInstruments = matchingInstrumentNames.map((x) => _.getInstrumentsByName(x))
 
     return (await Promise.all(matchingInstruments)).flat()
+  },
+  getOpenPosition: async (ticker) => {
+    try {
+      const res = t212.get(`equity/portfolio/${ticker}`)
+      return await res.data
+    } catch (e) {
+      if (e.response.status === 400) return new Error('Invalid ticker supplied')
+      if (e.response.status === 404) return null // No open position with that ticker
+      throw e
+    }
   }
 }

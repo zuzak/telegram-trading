@@ -49,7 +49,8 @@ const _ = module.exports = {
       Math.sign(order.quantity) > 0 ? 'Buying' : 'Selling',
       Math.abs(order.quantity) + '×',
       `<code>${order.ticker}</code>`,
-      order.type === 'MARKET' ? 'at next available price' : null
+      order.type === 'MARKET' ? 'at next available price' : null,
+      order.type === 'LIMIT' ? `at <code>${order.limitPrice}</code> or better` : null
     ].filter(Boolean).join(' ')
   },
   generateCashSummary: async (variant) => {

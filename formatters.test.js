@@ -47,9 +47,15 @@ describe('order summary', () => {
     )
   })
   test('works on a non-market order ', () => {
-    const order = { quantity: -1, ticker: 'XXX', type: 'LIMIT' }
+    const order = { quantity: -1, ticker: 'XXX', type: 'STOP' }
     expect(formatters.generateOrderSummary(order)).toBe(
       'Selling 1× <code>XXX</code>'
+    )
+  })
+  test('works on a limit order', () => {
+    const order = { quantity: -1, ticker: 'XXX', type: 'LIMIT', limitPrice: '5.00' }
+    expect(formatters.generateOrderSummary(order)).toBe(
+      'Selling 1× <code>XXX</code> at <code>5.00</code> or better'
     )
   })
 })

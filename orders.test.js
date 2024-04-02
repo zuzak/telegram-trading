@@ -27,7 +27,7 @@ describe('market orders', () => {
     expect(output).toStrictEqual(exampleOrder)
   })
 })
-describe('market orders', () => {
+describe('limit orders', () => {
   test('returns stuff on success', async () => {
     axios.post.mockImplementationOnce(() => Promise.resolve({ data: exampleOrder }))
 

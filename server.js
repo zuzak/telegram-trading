@@ -66,6 +66,7 @@ const main = async () => {
     }
 
     let quantity = Math.sign(senti)
+    let limitPrice = null
     if (quantity === 0) return
 
     console.log('Starting transaction')
@@ -76,7 +77,15 @@ const main = async () => {
         // if denominated in pence multiply by 100 as a quick way to make it "US-like"
         quantity = quantity * 100
       }
-      const order = await orders.placeMarketOrder(transactingInstrument.ticker, quantity)
+      if (quantity > 0) { // if selling
+        const existingHoldings = instruments.getOpenPosition(transactingInstrument.ticker)
+        if (await existingHoldings) {
+          limitPrice = existingHoldings.averagePrice
+        }
+        console.log('Existing', existingHoldings)
+      }
+
+      const order = await orders.placeOrder(transactingInstrument.ticker, quantity, limitPrice)
       append = formatters.generateOrderSummary(order)
     } catch (err) {
       console.log('Error placing order')

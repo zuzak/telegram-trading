@@ -1,7 +1,7 @@
 const t212 = require('./t212.js')
 const config = require('./config.js')
 
-module.exports = {
+const _ = module.exports = {
   /**
    * Places a market order:
    * buys or sells an equity at the next available price
@@ -28,10 +28,15 @@ module.exports = {
     )
     return res.data
   },
+  placeOrder: async (ticker, quantity, limitPrice, timeValidity) => {
+    if (limitPrice) return _.placeLimitOrder(ticker, quantity, limitPrice, timeValidity)
+    return _.placeMarketOrder(ticker, quantity)
+  },
   getOrder: async (id) => {
     const res = await t212.get(`equity/orders/${id}`)
     return res.data
   },
+  getOrders: async () => (await t212.get('equity/orders')).data,
   /**
    * Given an array of possible interesting instruments,
    * pick the best one to transact.
