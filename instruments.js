@@ -31,6 +31,12 @@ const _ = module.exports = {
    * Returns an array of instruments with a given name.
    */
   getInstrumentsByName: async (name) => {
+    const aliases = require('./aliases.json')
+    console.dir(aliases)
+    if (Object.keys(aliases).includes(name)) {
+      console.log('ALIAS', name)
+      name = aliases[name]
+    }
     const instruments = await _.getInstruments()
     return instruments.filter((x) => x.name === name)
   },
@@ -50,7 +56,9 @@ const _ = module.exports = {
    * Returns an array of all the available instrument names.
    */
   getInstrumentNames: async (name) => {
-    return Object.keys(await _.getInstrumentsKeyedByName()).sort((a, b) => a.length - b.length)
+    const aliases = require('./aliases.json')
+    const trueInstruments = Object.keys(await _.getInstrumentsKeyedByName()).sort((a, b) => a.length - b.length)
+    return trueInstruments.concat(Object.keys(aliases))
   },
   /**
    * Searches a given string and returns all the securities possibly mentioned within.

@@ -4,6 +4,8 @@ const instruments = require('./instruments.js')
 const axios = require('axios')
 jest.mock('axios')
 
+jest.mock('./aliases.json', () => ({}), { virtual: true })
+
 describe('instrument lookup', () => {
   test('returns stuff on success', async () => {
     const instrument = {
@@ -177,4 +179,18 @@ describe('instrument search', () => {
 
     expect(tickersInResponse).toEqual(expectedResponse)
   })
+})
+
+test.skip('aliases should insert into the "real" instruments', async () => {
+  // TODO: gotta do some sort of mock override here
+  const realInstruments = [{ a: 'a' }, { b: 'b' }]
+  const aliasedInstruments = { x: 'x', y: 'y' }
+  axios.get.mockImplementationOnce(() => Promise.resolve({ data: realInstruments }))
+
+  jest.mock('./aliases.json', () => aliasedInstruments, { virtual: true })
+
+  const output = await instruments.getInstruments()
+  expect(output).toStrictEqual([
+    { a: 'a' }, { b: 'b' }, { x: 'x' }, { y: 'y' }
+  ])
 })
