@@ -9,7 +9,6 @@ const _ = module.exports = {
     return `${user.firstName} ${user.lastName}`
   },
   getTMeUrl: (msg) => {
-    console.dir(msg)
     try {
       return `https://t.me/c/${msg.peerId.channelId}/${msg.id}`
     } catch (e) {

@@ -16,6 +16,7 @@ const _ = module.exports = {
       // We're only allowed to call this endpoint 1 in every 30s
       // but we do it on startup so let's automatically refresh
 
+      if (!e.response) throw e
       if (e.response.status !== 429) throw e
 
       console.log('Rate limited while getting instruments')

@@ -68,6 +68,8 @@ const main = async () => {
     let quantity = Math.sign(senti)
     if (quantity === 0) return
 
+    console.log('Starting transaction')
+
     let append
     try {
       if (transactingInstrument.currencyCode === 'GBX') {
@@ -77,6 +79,7 @@ const main = async () => {
       const order = await orders.placeMarketOrder(transactingInstrument.ticker, quantity)
       append = formatters.generateOrderSummary(order)
     } catch (err) {
+      console.log('Error placing order')
       console.dir(err)
       const direction = Math.sign(JSON.parse(err.config.data).quantity) > 0 ? 'buy' : 'sell'
       const reasons = {
