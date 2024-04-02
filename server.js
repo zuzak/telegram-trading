@@ -109,14 +109,14 @@ const main = async () => {
   }, new NewMessage())
 
   const updateCash = async () => {
-    const cash = formatters.generateCashSummary('emoji')
+    const cash = formatters.generateCashSummary('strapline')
     try {
       await client.invoke(
         new Api.channels.EditTitle({
-          peer: config.get('transactions.reportingChannel'),
-          about: (await cash) + ' TrashZone Trading'
+          channel: config.get('transactions.reportingChannel'),
+          title: (await cash)
         })
-      ).catch(() => null)
+      )
     } catch (e) {
       if (e.errorMessage === 'CHAT_NOT_MODIFIED') return
       throw e

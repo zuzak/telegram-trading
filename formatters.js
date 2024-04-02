@@ -55,7 +55,7 @@ const _ = module.exports = {
   generateCashSummary: async (variant) => {
     // this should probably be somewhere else
     const cash = (await t212.get('equity/account/cash')).data
-    const fmt = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' })
+    const fmt = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', notation: 'compact' })
     const fictionality = config.get('trading212.env') === 'demo' ? 'fictional' : '<u>real</u>'
     console.dir(cash)
     const emoji = {
@@ -86,6 +86,8 @@ const _ = module.exports = {
         ].join(' ')
       case 'emoji':
         return emoji
+      case 'strapline':
+        return `${emoji} TrashZone Trading · ${fmt.format(cash.free)}`
     }
     return cash
   }
