@@ -71,12 +71,18 @@ const main = async () => {
         // if denominated in pence multiply by 10 as a quick way to make it "US-like"
         quantity = quantity * config.get('transactions.gbxConversion')
       }
-      if (quantity > 0) { // if selling
-        const existingHoldings = instruments.getOpenPosition(transactingInstrument.ticker)
-        if (await existingHoldings) {
-          limitPrice = existingHoldings.averagePrice
+      if (quantity < 0) { // if selling
+        console.log('We\'re selling')
+        try {
+          const existingHoldings = await instruments.getOpenPosition(transactingInstrument.ticker)
+          if (existingHoldings) {
+            limitPrice = existingHoldings.averagePrice
+          }
+          console.log('Existing', existingHoldings)
+        } catch (e) {
+          console.log('Error with getting holding')
+          console.dir(e)
         }
-        console.log('Existing', existingHoldings)
       }
 
       const order = await orders.placeOrder(transactingInstrument.ticker, quantity, limitPrice)
