@@ -27,6 +27,11 @@ module.exports = (client) => {
           linkPreview: false
         })
       }
+      if (typeof reply === 'object') {
+        return event.message.reply({
+          message: `<pre language="json">${JSON.stringify(reply, null, 4)}</pre>`
+        })
+      }
       return reply
     }
   }, new NewMessage())
@@ -44,14 +49,11 @@ const commands = {
   },
   accountcash: {
     desc: 'Get a summary of our current cash holdings',
-    cmd: async (message) => message.reply({ message: await formatters.generateCashSummary('paragraph') })
+    cmd: async (message) => formatters.generateCashSummary('paragraph')
   },
   openorders: {
     desc: 'List all orders waiting for fulfillment',
-    cmd: async () => {
-      const json = await getOrders()
-      return `<pre language="json">${JSON.stringify(json, null, 4)}</pre>`
-    }
+    cmd: async () => getOrders()
   },
   lobo: {
     desc: null,
