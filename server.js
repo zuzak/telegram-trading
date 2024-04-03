@@ -90,7 +90,13 @@ const main = async () => {
         'Close only mode': 'the instrument is in close-only mode',
         InsufficientFreeForStocksException: 'we didn\'t have enough cash to cover the transaction'
       }
-      const reason = reasons[err.response.data.clarification] ?? `<code>${err.response.data.clarification}</code>`
+      let reason = ((x) => {
+        if (x.clarification) return x.clarification
+        if (x.errorMessage) return x.errorMessage
+        if (x.code) return x.code
+        return JSON.stingify(x)
+      })(err.response.data)
+      if (reasons[reason]) reason = reasons[reason]
       append = `❌ <b>Tried to ${direction}</b> but ${reason}`
     } finally {
       client.editMessage(
