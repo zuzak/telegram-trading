@@ -53,6 +53,17 @@ const commands = {
       return `<pre language="json">${JSON.stringify(json, null, 4)}</pre>`
     }
   },
+  lobo: {
+    desc: null,
+    cmd: (message) => {
+      if (Math.random() < 0.2) {
+        return message.respond({ // like .reply but without a quote
+          message: '/lobo',
+          linkPreview: false
+        })
+      }
+    }
+  },
   version: {
     desc: 'Get the version information of the bot',
     cmd: () => {
@@ -69,11 +80,12 @@ const commands = {
 
 const updateBotCommands = (client) => {
   const cmds = Object.keys(commands).map((x) => {
+    if (!commands[x].desc) return null
     return new Api.BotCommand({
       command: x,
       description: commands[x].desc
     })
-  })
+  }).filter(Boolean)
 
   client.invoke(
     new Api.bots.SetBotCommands({
