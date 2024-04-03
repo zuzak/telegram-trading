@@ -68,8 +68,8 @@ const main = async () => {
     let append
     try {
       if (transactingInstrument.currencyCode === 'GBX') {
-        // if denominated in pence multiply by 100 as a quick way to make it "US-like"
-        quantity = quantity * 100
+        // if denominated in pence multiply by 10 as a quick way to make it "US-like"
+        quantity = quantity * config.get('transactions.GBXConversion')
       }
       if (quantity > 0) { // if selling
         const existingHoldings = instruments.getOpenPosition(transactingInstrument.ticker)
