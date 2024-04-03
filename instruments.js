@@ -72,10 +72,11 @@ const _ = module.exports = {
   },
   getOpenPosition: async (ticker) => {
     try {
-      const res = t212.get(`equity/portfolio/${ticker}`)
-      return await res.data
+      const res = await t212.get(`equity/portfolio/${ticker}`)
+      return res.data
     } catch (e) {
-      if (e.response.status === 400) return new Error('Invalid ticker supplied')
+      console.log(`Error trying to get open position for ${ticker}`)
+      if (e.response.status === 400) throw new Error('Invalid ticker supplied')
       if (e.response.status === 404) return null // No open position with that ticker
       throw e
     }
