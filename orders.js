@@ -29,6 +29,7 @@ const _ = module.exports = {
     return res.data
   },
   placeOrder: async (ticker, quantity, limitPrice, timeValidity) => {
+    console.log('ORDER', ticker, quantity, limitPrice, timeValidity)
     if (limitPrice) return _.placeLimitOrder(ticker, quantity, limitPrice, timeValidity)
     return _.placeMarketOrder(ticker, quantity)
   },

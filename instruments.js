@@ -32,7 +32,6 @@ const _ = module.exports = {
    */
   getInstrumentsByName: async (name) => {
     const aliases = require('./aliases.json')
-    console.dir(aliases)
     if (Object.keys(aliases).includes(name)) {
       console.log('ALIAS', name)
       name = aliases[name]
