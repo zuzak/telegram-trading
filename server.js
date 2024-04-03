@@ -63,7 +63,7 @@ const main = async () => {
     let limitPrice = null
     if (quantity === 0) return
 
-    console.log('Starting transaction')
+    console.log('Starting transaction', transactingInstrument)
 
     let append
     try {
