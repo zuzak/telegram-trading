@@ -85,7 +85,7 @@ const config = convict({
     gbxConversion: {
       doc: 'The factor of which to multiply quantities of GBX transactions by',
       format: Number,
-      default: 0
+      default: 1
     },
     defaultExpiry: {
       doc: 'The type of expiry to set on limit orders unless otherwise specified',
