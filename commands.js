@@ -10,7 +10,14 @@ module.exports = (client) => {
     if (!event.message) return
 
     const firstWord = event.message.message.split(' ')[0]
-    const command = firstWord.substr(1)
+    let command = firstWord.substr(1)
+    if (!firstWord.startsWith('/')) return
+    if (firstWord.includes('@')) {
+      if (firstWord.substring(firstWord.indexOf('@')) !== '@TrashzoneTradingBot') {
+        return
+      }
+      command = firstWord.substring(0, firstWord.indexOf('@'))
+    }
 
     if (commands[command]) {
       const reply = await commands[command].cmd(event.message)
