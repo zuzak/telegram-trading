@@ -5,6 +5,7 @@ const sentiment = require('./sentiment.js')
 const orders = require('./orders.js')
 const formatters = require('./formatters.js')
 const config = require('./config.js')
+const pendingOrders = require('./pendingOrders.js')
 
 module.exports = async (client) => {
   client.addEventHandler(async (event) => {
@@ -81,6 +82,7 @@ module.exports = async (client) => {
       }
 
       const order = await orders.placeOrder(transactingInstrument.ticker, quantity, limitPrice)
+      pendingOrders.pollPendingOrder(transactionMessage, mentionSummary, order, order, mentionSummary, 1000)
       append = formatters.generateOrderSummary(order)
     } catch (err) {
       console.log('Error placing order')
