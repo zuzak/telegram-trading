@@ -1,4 +1,5 @@
 const t212 = require('./t212.js')
+const instruments = require('./instruments.js')
 const config = require('./config.js')
 const _ = module.exports = {
   /**
@@ -44,13 +45,21 @@ const _ = module.exports = {
    * Outputs a nicely formatted summary of an order status
    * given an order object
    */
-  generateOrderSummary: (order) => {
+  generateOrderSummary: async (order) => {
+    const instrument = await instruments.getInstrumentByTicker(order.ticker)
+    const direction = Math.sign(order.quantity) === 1 ? 'BUY' : 'SELL'
+
+    const currencyFormat = Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: instrument.currencyCode
+    })
+
     return [
       Math.sign(order.quantity) > 0 ? 'Buying' : 'Selling',
       Math.abs(order.quantity) + '×',
       `<code>${order.ticker}</code>`,
       order.type === 'MARKET' ? 'at next available price' : null,
-      order.type === 'LIMIT' ? `at <code>${order.limitPrice}</code> or better` : null
+      order.type === 'LIMIT' ? `at <code>${currencyFormat.format(order.limitPrice)}</code> or better` : null,
     ].filter(Boolean).join(' ')
   },
   generateCashSummary: async (variant) => {
@@ -68,7 +77,7 @@ const _ = module.exports = {
       case 'paragraph':
         return [
           `Our ${fictionality} account value is ${fmt.format(cash.total)}.`,
-          'We started with £10,000.',
+          `We started with ${fmt.format(10000)}`,
           '',
           `We have ${fmt.format(cash.invested)} invested right now.`,
           `That's a return of ${emoji} ${fmt.format(cash.ppl)}.`,
