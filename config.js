@@ -93,7 +93,7 @@ const config = convict({
         'GTC', // Good 'Til Cancelled
         'DAY' // End of trading day
       ],
-      default: 'GTC'
+      default: 'DAY'
     }
   }
 })
