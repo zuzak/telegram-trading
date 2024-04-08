@@ -31,7 +31,25 @@ const _ = module.exports = {
   placeOrder: async (ticker, quantity, limitPrice, timeValidity) => {
     console.log('ORDER', ticker, quantity, limitPrice, timeValidity)
     if (limitPrice) return _.placeLimitOrder(ticker, quantity, limitPrice, timeValidity)
-    return _.placeMarketOrder(ticker, quantity)
+    try {
+      const order = await _.placeMarketOrder(ticker, quantity)
+      return order
+    } catch (e) {
+      if (e.response && e.response.data && e.response.data.clarification === 'InsufficientFreeForStocksException') {
+        // not enough cash! wait a bit to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 5 * 1000))
+        // try again with a smaller order quantity
+        quantity = quantity / 2
+        return _.placeOrder(ticker, quantity.toPrecision(3)) // the API enforces precision
+      }
+      if (e.response && e.response.status === 429) {
+        console.error('Rate limited on placing order...')
+        await new Promise(resolve => setTimeout(resolve, 5 * 1000))
+        console.error('...retrying order placement')
+        return _.placeMarketorder(ticker, quantity)
+      }
+      throw e
+    }
   },
   getOrder: async (id) => {
     try {
