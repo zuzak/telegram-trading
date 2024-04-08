@@ -34,7 +34,7 @@ module.exports = async (client) => {
 
     const transactionMessage = client.sendMessage(
       config.get('transactions.reportingChannel'),
-      { message: mentionSummary, linkPreview: false }
+      { message: mentionSummary + '\r\n🤔 Processing…', linkPreview: false }
     )
 
     if (Math.abs(senti) < config.get('transactions.sentimentThreshold')) {
