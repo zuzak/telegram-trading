@@ -48,18 +48,42 @@ const _ = module.exports = {
   generateOrderSummary: async (order) => {
     const instrument = await instruments.getInstrumentByTicker(order.ticker)
     const direction = Math.sign(order.quantity) === 1 ? 'BUY' : 'SELL'
+    // LOCAL" "UNCONFIRMED" "CONFIRMED" "NEW" "CANCELLING" "CANCELLED" "PARTIALLY_FILLED" "FILLED" "REJECTED" "REPLACING" "REPLACED"
+    const verbs = {
+      UNCONFIRMED: 'Unconfirmed',
+      CONFIRMED: 'Confirmed',
+      NEW: direction === 'BUY' ? '⏳ Trying to buy' : '⏳ Trying to sell',
+      CANCELLING: direction === 'BUY' ? '🆑 Cancelling buy order of' : '🆑 Cancelling sell order of',
+      CANCELLED: direction === 'BUY' ? '🆑 Cancelled buy order of' : '🆑 Cancelled sell order of',
+      PARTIALLY_FILLED: direction === 'BUY' ? '⌛ Buying' : '⌛ Selling',
+      FILLED: direction === 'BUY' ? '✅ Bought' : '❎ Sold',
+      REJECTED: direction === 'BUY' ? '🆑 Rejected buy order of' : '🆑 Rejected sell order of',
+      REPLACING: 'Replacing',
+      REPLACED: 'Replaced'
+    }
 
     const currencyFormat = Intl.NumberFormat('en-GB', {
       style: 'currency',
       currency: instrument.currencyCode
     })
 
+    if (order.parentOrder) { // if historical
+      return [
+        verbs[order.status],
+        order.filledQuantity === order.orderedQuantity ? `${order.filledQuantity}×` : `${order.filledQuantity} filled of ${Math.abs(order.orderedQuantity)}`,
+        `<code>${order.ticker}</code>`,
+        '@',
+        currencyFormat.format(order.fillPrice)
+      ].filter(Boolean).join(' ')
+    }
+
     return [
-      Math.sign(order.quantity) > 0 ? 'Buying' : 'Selling',
+      verbs[order.status],
       Math.abs(order.quantity) + '×',
       `<code>${order.ticker}</code>`,
       order.type === 'MARKET' ? 'at next available price' : null,
       order.type === 'LIMIT' ? `at <code>${currencyFormat.format(order.limitPrice)}</code> or better` : null,
+      order.timeValidity === 'DAY' ? 'if possible before the end of the trading day' : null
     ].filter(Boolean).join(' ')
   },
   generateCashSummary: async (variant) => {

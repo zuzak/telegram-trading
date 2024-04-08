@@ -39,6 +39,10 @@ const _ = module.exports = {
     const instruments = await _.getInstruments()
     return instruments.filter((x) => x.name === name)
   },
+  getInstrumentByTicker: async (ticker) => {
+    const instruments = await _.getInstruments()
+    return instruments.find((x) => x.ticker === ticker)
+  },
   /**
    * Returns a key-value object of instruments keyed by their name.
    * If there's duplicate names, they'll get globbed.

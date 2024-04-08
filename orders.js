@@ -34,8 +34,16 @@ const _ = module.exports = {
     return _.placeMarketOrder(ticker, quantity)
   },
   getOrder: async (id) => {
-    const res = await t212.get(`equity/orders/${id}`)
-    return res.data
+    try {
+      const res = await t212.get(`equity/orders/${id}`)
+      return res.data
+    } catch (e) {
+      if (e.response.status === 404) {
+        const historicalOrders = (await t212.get('equity/history/orders')).data.items
+        return historicalOrders.find((x) => x.parentOrder === id)
+      }
+      throw e
+    }
   },
   getOrders: async () => (await t212.get('equity/orders')).data,
   /**
