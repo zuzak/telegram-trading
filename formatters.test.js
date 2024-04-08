@@ -1,5 +1,8 @@
-const { expect, test, describe } = require('@jest/globals')
+const { expect, test, describe, jest } = require('@jest/globals')
 const formatters = require('./formatters.js')
+const axios = require('axios')
+
+jest.mock('axios')
 
 describe('username formatting', () => {
   test('works with a username', () => {
@@ -34,28 +37,42 @@ describe('underliner', () => {
   })
 })
 describe('order summary', () => {
-  test('works on a buy', () => {
-    const order = { quantity: 1, ticker: 'XXX', type: 'MARKET' }
-    expect(formatters.generateOrderSummary(order)).toBe(
-      'Buying 1× <code>XXX</code> at next available price'
+  const fakeTicker = [{ ticker: 'XXX', currencyCode: 'GBP' }]
+  test('works on a new buy', async () => {
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: fakeTicker }))
+    const order = { quantity: 1, ticker: 'XXX', type: 'MARKET', status: 'NEW' }
+    expect(await formatters.generateOrderSummary(order)).toBe(
+      '⏳ Trying to buy 1× <code>XXX</code> at next available price'
     )
   })
-  test('works on a sell', () => {
-    const order = { quantity: -1, ticker: 'XXX', type: 'MARKET' }
-    expect(formatters.generateOrderSummary(order)).toBe(
-      'Selling 1× <code>XXX</code> at next available price'
+  test('works on a new sell', async () => {
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: fakeTicker }))
+    const order = { quantity: -1, ticker: 'XXX', type: 'MARKET', status: 'NEW' }
+    expect(await formatters.generateOrderSummary(order)).toBe(
+      '⏳ Trying to sell 1× <code>XXX</code> at next available price'
     )
   })
-  test('works on a non-market order ', () => {
-    const order = { quantity: -1, ticker: 'XXX', type: 'STOP' }
-    expect(formatters.generateOrderSummary(order)).toBe(
-      'Selling 1× <code>XXX</code>'
+  test('works on a new stop order', async () => {
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: fakeTicker }))
+    const order = { quantity: -1, ticker: 'XXX', type: 'STOP', status: 'NEW' }
+    expect(await formatters.generateOrderSummary(order)).toBe(
+      '⏳ Trying to sell 1× <code>XXX</code>'
     )
   })
-  test('works on a limit order', () => {
-    const order = { quantity: -1, ticker: 'XXX', type: 'LIMIT', limitPrice: '5.00' }
-    expect(formatters.generateOrderSummary(order)).toBe(
-      'Selling 1× <code>XXX</code> at <code>5.00</code> or better'
+  test('works on a new limit order', async () => {
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: fakeTicker }))
+    const order = { quantity: -1, ticker: 'XXX', type: 'LIMIT', limitPrice: '5.00', status: 'NEW' }
+    expect(await formatters.generateOrderSummary(order)).toBe(
+      '⏳ Trying to sell 1× <code>XXX</code> at <code>£5.00</code> or better'
+    )
+  })
+  test('works on a new limit order in a non-default currency', async () => {
+    const fakeTickerUsd = fakeTicker
+    fakeTickerUsd[0].currencyCode = 'USD'
+    axios.get.mockImplementationOnce(() => Promise.resolve({ data: fakeTickerUsd }))
+    const order = { quantity: -1, ticker: 'XXX', type: 'LIMIT', limitPrice: '5.00', status: 'NEW' }
+    expect(await formatters.generateOrderSummary(order)).toBe(
+      '⏳ Trying to sell 1× <code>XXX</code> at <code>US$5.00</code> or better'
     )
   })
 })
