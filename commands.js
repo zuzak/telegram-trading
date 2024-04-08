@@ -53,7 +53,11 @@ const commands = {
   },
   openorders: {
     desc: 'List all orders waiting for fulfillment',
-    cmd: async () => getOrders()
+    cmd: async () => {
+      const orders = await getOrders()
+      const sentences = orders.map(async (x) => `${await formatters.generateOrderSummary(x)}`)
+      return (await Promise.all(sentences)).join('\r\n')
+    }
   },
   lobo: {
     desc: null,
