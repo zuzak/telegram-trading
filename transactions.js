@@ -70,6 +70,8 @@ module.exports = async (client) => {
           const existingHoldings = await instruments.getOpenPosition(transactingInstrument.ticker)
           if (existingHoldings) {
             limitPrice = existingHoldings.averagePrice
+            const multipler = config.get('transactions.flipMultiplier')
+            if (multiplier) limitPrice = limitPrice + (limitPrice * multiplier)
           }
           console.log('Existing', existingHoldings)
         } catch (e) {
