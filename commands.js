@@ -63,7 +63,7 @@ const commands = {
     desc: null,
     cmd: (message) => {
       if (Math.random() < 0.2) {
-        return message.respond({ // like .reply but without a quote
+        message.respond({ // like .reply but without a quote
           message: '/lobo',
           linkPreview: false
         })
