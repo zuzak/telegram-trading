@@ -1,0 +1,66 @@
+html
+  head
+    script(src="https://telegram.org/js/telegram-web-app.js")
+    style.
+      html {
+        background-color: var(--tg-theme-secondary-bg-color);
+        color: var(--tg-theme-text-color);
+        font-family: sans-serif;
+      }
+      tr {
+        background-color: var(--tg-theme-bg-color)
+      }
+      section {
+        background-color: var(--tg-theme-section-bg-color);
+        border-radius: 1em;
+        padding: 1em;
+        margin: 1em;
+        text-align: center;
+        min-height: 6em;
+      }
+      section h2 {
+        color: var(--tg-theme-section-header-text-color)
+      }
+      section h2 .symbol {
+        color: var(--tg-theme-subtitle-text-color)
+        clear: left;
+      }
+      strong {
+        color: var(--tg-theme-accent-text-color)
+      }
+      img {
+        float: inline-start;
+        height: 6em;
+      }
+
+body
+  for item in items
+    section
+      img(src="https://trading212equities.s3.eu-central-1.amazonaws.com/" + item.instrument.ticker + ".png")
+      h2
+        span.name= item.instrument.name
+        |
+        |
+        span.symbol
+          code= item.instrument.shortName
+      p
+        | Trying to
+        |
+        strong.direction= Math.sign(item.order.quantity) > 0 ? 'buy' : 'sell'
+        |
+        |
+        span.quantity= Math.abs(item.order.quantity)
+        | x
+        |
+        span= item.instrument.name
+        if item.order.strategy === 'MARKET'
+          span at next available price
+        else
+          span
+            | at
+            |
+            span.limitPrice= (new Intl.NumberFormat('en-US', {style: 'currency', currency: item.instrument.currencyCode, currencySign: 'accounting'})).format(item.order.limitPrice)
+            |
+            | or better
+
+

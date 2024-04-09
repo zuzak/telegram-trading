@@ -5,6 +5,8 @@ const config = require('./config.js')
 const commands = require('./commands.js')
 const transactions = require('./transactions.js')
 
+const webserver = require('./webserver.js')
+
 const main = async () => {
   const client = await require('./client.js')()
 
@@ -28,6 +30,8 @@ const main = async () => {
     }
   }
   updateCash()
+
+  webserver.listen(6989)
 }
 
 main()
