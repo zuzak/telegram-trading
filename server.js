@@ -31,7 +31,7 @@ const main = async () => {
   }
   updateCash()
 
-  webserver.listen(6989)
+  webserver.listen(config.get('webserver.port'))
 }
 
 main()

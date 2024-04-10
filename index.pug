@@ -1,0 +1,69 @@
+extends skeleton.pug
+block body
+  if cash
+    - const currency = new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP', currencySign: 'accounting'})
+    h1(style="text-align: center")
+     span.subtitle Account total:
+     |
+     |
+     = currency.format(cash.total)
+     small
+       if (cash.result + cash.ppl) > 0
+         span.positive
+          | &#9650;
+          = currency.format(cash.result + cash.ppl)
+       else
+         span.negative
+          | &#9660;
+          = currency.format(cash.result + cash.ppl)
+    section
+      h2.invested
+        span= currency.format(cash.invested)
+        |
+        | invested
+      p
+        | This is how much money our stocks and shares are worth.
+      p
+        | That&rsquo;s
+        |
+        if Math.sign(cash.ppl) > 0
+          strong.positive
+            = currency.format(Math.abs(cash.ppl))
+            |
+            | more
+        else
+          strong.negative
+            = currency.format(Math.abs(cash.ppl))
+            |
+            | less 
+
+        |
+        | than we bought them for.
+    section
+      p
+        h2.free
+          = currency.format(cash.free)
+          |
+          | free
+      p.
+        This is how much we&rsquo;ve got as cash in our account.
+        Some of this might have been earmarked for future orders.
+      p
+        | Our realised result is
+        |
+        if Math.sign(cash.result) > 0
+          strong.positive
+            = currency.format(Math.abs(cash.result))
+            |
+            | profit
+        else
+          strong.negative
+            = currency.format(Math.abs(cash.result))
+            |
+            | loss
+        |
+        | overall.
+
+
+  a(href="/orders") View open orders
+  a(href="/positions") View open positions

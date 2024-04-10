@@ -64,6 +64,7 @@ const _ = module.exports = {
     }
   },
   getOrders: async () => (await t212.get('equity/orders')).data,
+  getPositions: async () => (await t212.get('equity/portfolio')).data,
   /**
    * Given an array of possible interesting instruments,
    * pick the best one to transact.

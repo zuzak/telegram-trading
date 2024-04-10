@@ -1,0 +1,105 @@
+html
+  head
+    meta(name="viewport",content="width=device-width, initial-scale=1")
+    if timeout
+      meta(http-equiv="refresh",content=timeout)
+    script(src="https://telegram.org/js/telegram-web-app.js")
+    style.
+      ul {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 3em;
+        text-align: left;
+      }
+      li {
+        display: inline;
+        text-align: center;
+        list-style-type: none
+        flex: 1 1 0;
+        margin: 0.2em;
+      }
+      li a {
+        background-color: unset;
+        display: unset;
+        padding: 0.2em
+      }
+
+      html {
+        background-color: var(--tg-theme-secondary-bg-color);
+        color: var(--tg-theme-text-color);
+        font-family: sans-serif;
+      }
+      section {
+        border-left: 1em solid transparent;
+      }
+      /* section.positive {
+        border-left: 1em solid var(--tg-theme-accent-text-color)
+      } */
+      li.negative {
+        background-color: var(--tg-theme-destructive-text-color);
+      }
+      li.positive{
+        background-color: var(--tg-theme-accent-text-color);
+      }
+      section.negative {
+        border-left: 1em solid var(--tg-theme-destructive-text-color)
+      }
+      pre {
+        background-color: var(--tg-theme-secondary-bg-color);
+        text-align: left;
+        padding: 1em;
+      }
+      details { float: left;clear:left; margin: 1em }
+      summary {
+        text-align: left;
+      }
+
+      tr {
+        background-color: var(--tg-theme-bg-color)
+      }
+      section {
+        background-color: var(--tg-theme-section-bg-color);
+        border-radius: 1em;
+        padding: 1em;
+        margin: 1em;
+        text-align: center;
+        min-height: 7em;
+      }
+      section h2 {
+        color: var(--tg-theme-section-header-text-color)
+      }
+      .subtitle {
+        color: var(--tg-theme-subtitle-text-color)
+      }
+      section h2 .symbol {
+        color: var(--tg-theme-subtitle-text-color)
+        clear: left;
+      }
+      strong {
+        color: var(--tg-theme-accent-text-color)
+      }
+      strong.negative {
+        color: var(--tg-theme-destructive-text-color)
+      }
+      img {
+        height: 7em;
+        margin-right: 1em;
+        float: inline-start;
+      }
+      .info {
+        color: var(--tg-theme-hint-color);
+        font-size: 80%;
+        font-family: monospace;
+      }
+      a {
+        background-color: var(--tg-theme-button-color);
+        color: var(--tg-theme-button-text-color);
+        padding: 1em;
+        margin: 1em;
+        text-decoration: none;
+        display: block;
+      }
+
+body
+  block body

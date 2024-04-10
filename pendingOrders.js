@@ -38,6 +38,7 @@ const pollPendingOrder = module.exports = async (messageObject, summary, oldOrde
     summary,
     await formatters.generateOrderSummary(order)
   ].filter(Boolean).join('\r\n')
+  console.log('OLDMSG', oldMessage, text)
   if (oldMessage !== text) {
     await messageObject.edit(
       {

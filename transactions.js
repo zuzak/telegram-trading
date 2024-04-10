@@ -82,8 +82,8 @@ module.exports = async (client) => {
       }
 
       const order = await orders.placeOrder(transactingInstrument.ticker, quantity, limitPrice)
-      pendingOrders.pollPendingOrder(transactionMessage, mentionSummary, order, order, mentionSummary, 1000)
-      append = formatters.generateOrderSummary(order)
+      pendingOrders(await transactionMessage, mentionSummary, order, mentionSummary, 1000)
+      append = await formatters.generateOrderSummary(order)
     } catch (err) {
       console.log('Error placing order')
       console.dir(err)
