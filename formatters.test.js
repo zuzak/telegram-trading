@@ -35,6 +35,11 @@ describe('underliner', () => {
       formatters.underlineMessage('hello hello world', 'hello')
     ).toBe('<u>hello</u> hello world')
   })
+  test('works when there\'s no match', () => {
+    expect(
+      formatters.underlineMessage('hello world', 'xyzzy')
+    ).toBe('hello world')
+  })
 })
 describe('order summary', () => {
   const fakeTicker = [{ ticker: 'XXX', currencyCode: 'GBP' }]

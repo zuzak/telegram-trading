@@ -21,6 +21,7 @@ const _ = module.exports = {
    */
   underlineMessage: (str, substr) => {
     if (!substr) return str
+    if (!str.includes(substr)) return str
     const index = str.toUpperCase().indexOf(substr.toUpperCase())
     return [
       str.substr(0, index),
