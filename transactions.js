@@ -20,9 +20,12 @@ module.exports = async (client) => {
 
     const possibleInstruments = instruments.searchStringForInstruments(msg.message)
     const senti = sentiment.getSentiment(msg.message)
+
+    const username = formatters.formatUsername(sender)
+    if (!username) return // probably a channel
     console.log(
       new Date(msg.date * 1000),
-      formatters.formatUsername(sender),
+      username,
       msg.message,
       senti
     )
@@ -59,8 +62,6 @@ module.exports = async (client) => {
 
     console.log('Starting transaction', transactingInstrument)
 
-    let append
-    try {
       if (transactingInstrument.currencyCode === 'GBX') {
         // if denominated in pence multiply by 10 as a quick way to make it "US-like"
         quantity = quantity * config.get('transactions.gbxConversion')
@@ -81,9 +82,10 @@ module.exports = async (client) => {
         }
       }
 
+    try {
       const order = await orders.placeOrder(transactingInstrument.ticker, quantity, limitPrice)
+      console.log('PLACED ERR ORDER', order)
       pendingOrders(await transactionMessage, mentionSummary, order, mentionSummary, 1000)
-      append = await formatters.generateOrderSummary(order)
     } catch (err) {
       console.log('Error placing order')
       console.dir(err)
@@ -102,23 +104,25 @@ module.exports = async (client) => {
         return JSON.stingify(x)
       })(err.response.data)
       if (reasons[reason]) reason = reasons[reason]
-      append = `❌ <b>Tried to ${direction}</b> but ${reason}`
-    } finally {
+
       client.editMessage(
         config.get('transactions.reportingChannel'),
         {
           message: (await transactionMessage).id,
           linkPreview: false,
-          text: [mentionSummary, append].join('\r\n')
+          text: [
+            mentionSummary,
+            `❌ <b>Tried to ${direction}</b> but ${reason}`
+          ].join('\r\n')
         }
       )
+    } finally {
+      client.invoke(
+        new Api.messages.SetTyping({
+          peer: config.get('transactions.reportingChannel'),
+          action: new Api.SendMessageCancelAction({})
+        })
+      )
     }
-
-    client.invoke(
-      new Api.messages.SetTyping({
-        peer: config.get('transactions.reportingChannel'),
-        action: new Api.SendMessageCancelAction({})
-      })
-    )
   }, new NewMessage())
 }
