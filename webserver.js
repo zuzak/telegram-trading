@@ -1,6 +1,7 @@
 const express = require('express')
 const t212 = require('./t212.js')
 const app = module.exports = express()
+const markets = require('./markets.js')
 const orders = require('./orders.js')
 const instruments = require('./instruments.js')
 const pug = require('pug')
@@ -41,7 +42,8 @@ try {
 
     const augmentedOrders = await pendingOrders.map(async (order) => {
       const instrument = await instruments.getInstrumentByTicker(order.ticker)
-      return { order, instrument }
+      const market = await markets.getMarketById(instrument.workingScheduleId)
+      return { order, instrument, market }
     })
 
     Promise.all(augmentedOrders).then((items) => {
