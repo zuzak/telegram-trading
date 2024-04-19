@@ -1,6 +1,8 @@
 {
   "Maersk": "AP Moller Maersk",
 
+  "BAE": "BAE Systems",
+
   "BMW": "Bayerische Motoren Werke (Preferred)",
 
   "Costa": "Coca-Cola",
@@ -21,6 +23,8 @@
 
   "Hyundai": "Hyundai Motor",
 
+  "Logitech": "Logitech International",
+
   "M&S": "Marks & Spencer",
 
   "Mazda": "Mazda Motor",
@@ -29,6 +33,8 @@
 
   "Burger King": "Restaurant Brands International",
   "Tim Hortons": "Restaurant Brands International",
+
+  "Raytheon": "RTX Corp",
 
   "Sainsbury's": "J Sainsbury",
   "Sainsburys": "J Sainsbury",
@@ -42,10 +48,15 @@
   "Peugeot": "Stellantis",
   "Vauxhall": "Stellantis",
 
+  "Trump": "Trump Media & Technology Group",
+
   "Toyota": "Toyota Motor",
 
   "Brewers Fayre": "Whitbread",
-  "Premier Inn", "Whitbread",
+  "Premier Inn": "Whitbread",
+
+  "WHSmith": "WH Smith",
+  "WHSmiths": "WH Smith",
 
   "KFC": "Yum! Brands",
   "Pizza Hut": "Yum! Brands",
