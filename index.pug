@@ -9,11 +9,11 @@ block body
      = currency.format(cash.total)
      small
        if (cash.result + cash.ppl) > 0
-         span.positive
+         strong.positive
           | &#9650;
           = currency.format(cash.result + cash.ppl)
        else
-         span.negative
+         strong.negative
           | &#9660;
           = currency.format(cash.result + cash.ppl)
     section

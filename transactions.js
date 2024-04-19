@@ -92,7 +92,7 @@ module.exports = async (client) => {
         SellingEquityNotOwned: 'we didn\'t own enough of the equity to sell',
         'Close only mode': 'the instrument is in close-only mode',
         InsufficientFreeForStocksException: 'we didn\'t have enough cash to cover the transaction',
-        InternalError: 'upstream replied with an ⛓️‍💥internal server error',
+        InternalError: 'upstream replied with an 💥internal server error',
         'Too many requests': 'we got rate limited 🫸'
       }
       let reason = ((x) => {

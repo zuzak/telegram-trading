@@ -50,7 +50,7 @@ html
         text-align: left;
         padding: 1em;
       }
-      details { float: left;clear:left; margin: 1em }
+      details {  margin: 1em }
       summary {
         text-align: left;
       }
@@ -82,14 +82,21 @@ html
       strong.negative {
         color: var(--tg-theme-destructive-text-color)
       }
-      img {
-        height: 7em;
+      .img {
         margin-right: 1em;
         float: inline-start;
       }
+      img {
+        height: 7em;
+      }
+      .img div {
+        margin-top: 0.5em;
+        padding: 0.5em;
+        color: var(--tg-theme-section-tg-color);
+        background-color: var(--tg-theme-accent-text-color)
+      }
       .info {
         color: var(--tg-theme-hint-color);
-        font-size: 80%;
         font-family: monospace;
       }
       a {

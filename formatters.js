@@ -58,7 +58,7 @@ const _ = module.exports = {
       CANCELLED: direction === 'BUY' ? '🆑 Cancelled buy order of' : '🆑 Cancelled sell order of',
       PARTIALLY_FILLED: direction === 'BUY' ? '⌛ Buying' : '⌛ Selling',
       FILLED: direction === 'BUY' ? '✅ Bought' : '❎ Sold',
-      REJECTED: direction === 'BUY' ? '🆑 Rejected buy order of' : '🆑 Rejected sell order of',
+      REJECTED: direction === 'BUY' ? '🆑 Rejected buy order:' : '🆑 Rejected sell order: ',
       REPLACING: 'Replacing',
       REPLACED: 'Replaced'
     }
@@ -70,8 +70,8 @@ const _ = module.exports = {
 
     if (order.parentOrder) { // if historical
       return [
-        verbs[order.status],
-        order.filledQuantity === order.orderedQuantity ? `${order.filledQuantity}×` : `${order.filledQuantity} filled of ${Math.abs(order.orderedQuantity)}`,
+        `<b>${verbs[order.status]}</b>`,
+        order.filledQuantity === order.orderedQuantity ? `${Math.abs(order.filledQuantity)}×` : `${order.filledQuantity} filled of ${Math.abs(order.orderedQuantity)}`,
         `<code>${order.ticker}</code>`,
         '@',
         currencyFormat.format(order.fillPrice)
@@ -79,7 +79,7 @@ const _ = module.exports = {
     }
 
     return [
-      verbs[order.status],
+      `<b>${verbs[order.status]}</b>`,
       Math.abs(order.quantity) + '×',
       `<code>${order.ticker}</code>`,
       order.type === 'MARKET' ? 'at next available price' : null,
