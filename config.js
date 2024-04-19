@@ -98,7 +98,7 @@ const config = convict({
     flipMultiplier: {
       format: Number,
       doc: 'Minimum multipler above average buy price to set sell limit orders at',
-      default: 0.005
+      default: 0.0025
     }
   },
   webserver: {
