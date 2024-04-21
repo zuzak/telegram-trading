@@ -16,7 +16,7 @@ module.exports = (client) => {
       if (firstWord.substring(firstWord.indexOf('@')) !== '@TrashzoneTradingBot') {
         return
       }
-      command = firstWord.substring(0, firstWord.indexOf('@'))
+      command = firstWord.substring(0, firstWord.indexOf('@')).substr(1)
     }
 
     if (commands[command]) {
