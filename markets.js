@@ -3,9 +3,6 @@ const t212 = require('./t212.js')
 let cache
 
 const _ = module.exports = {
-  /**
-   * List all instruments our account has access to.
-   */
   getMarkets: async () => {
     if (cache) return cache
     try {
@@ -26,16 +23,13 @@ const _ = module.exports = {
       return _.getMarkets()
     }
   },
-  /**
-   * Returns an array of instruments with a given name.
-   */
   getMarketByName: async (name) => {
     const markets = await _.getMarkets()
     return markets.filter((x) => x.name === name)
   },
   getMarketById: async (id) => {
     const markets = await _.getMarkets()
-    return markets.find((x) => x.id=== id)
+    return markets.find((x) => x.workingSchedules.find((y) => y.id === id))
   },
   getMarketNameById: async (id) => {
     return (await _.getMarketById(id)).name

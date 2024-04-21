@@ -67,14 +67,15 @@ try {
       const positions = await orders.getPositions()
       cache.positions = await positions.map(async (position) => {
         const instrument = await instruments.getInstrumentByTicker(position.ticker)
-        return { position, instrument }
+        const market = await markets.getMarketById(instrument.workingScheduleId)
+        return { position, instrument, market }
       })
       setTimeout(() => { cache.positions = null }, timeout * 1000)
     }
     Promise.all(cache.positions).then((items) => {
       try {
         res.send(pug.renderFile('positions.pug', {
-          pretty: true, compileDebug: true, items, timeout
+          pretty: true, compileDebug: true, items // timeout
         }))
       } catch (e) {
         console.dir(e)

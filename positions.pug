@@ -1,0 +1,101 @@
+extends skeleton
+block body
+  ul
+    for item in items
+      if item.position.ppl + item.position.fxPpl > 0
+        li.info.positive
+          a(href="#" + item.instrument.ticker)= item.instrument.shortName
+      else
+        li.info.negative
+          a(href="#" + item.instrument.ticker)= item.instrument.shortName
+  for item in items
+    - currency = (new Intl.NumberFormat('en-GB', {style: 'currency', currency: item.instrument.currencyCode, currencySign: 'accounting'}))
+    - gbp = (new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP', currencySign: 'accounting'}))
+    - ret = item.position.ppl + item.position.fxPpl
+    - retClass = ret > 0 ? 'positive' : 'negative'
+    section(class=retClass,id=item.instrument.ticker)
+      .img
+        img(src="https://trading212equities.s3.eu-central-1.amazonaws.com/" + item.instrument.ticker + ".png",alt="")
+        if item.instrument.type !== 'STOCK'
+          div.info= item.instrument.type
+      h2
+        span.name= item.instrument.name
+        |
+        |
+        span.symbol
+          code= item.instrument.shortName
+      p
+        | We hold
+        |
+        strong.quantity= item.position.quantity
+        |
+        | share
+        if item.position.quantity !== 1
+          | s
+        |
+        | on the
+        |
+        span.market= item.market.name
+        |
+        | which we bought
+        |
+        if item.position.frontend !== 'SYSTEM'
+          strong manually
+        |
+        | for
+        |
+        if item.position.quantity !== 1
+          | an average price of
+          |
+        strong.price= currency.format(item.position.averagePrice)
+        if item.position.quantity !== 1
+          |
+          | per share
+        |
+        | and
+        |
+        if item.position.quantity !== 1
+          | are
+        else
+          | is
+        |
+        | now worth
+        |
+        strong.price= currency.format(item.position.currentPrice)
+        | .
+      if item.position.ppl
+        p
+          | That&rsquo;s a potential
+          |
+          if item.position.ppl > 0
+            | profit of
+            |
+            strong.positive= gbp.format(item.position.ppl)
+          else
+            | loss of
+            |
+            strong.negative= gbp.format(item.position.ppl)
+          | .
+        //if item.position.fxPpl
+          p
+            | With a forex impact of
+            |
+            if item.position.fxPpl > 0
+              strong.positive= gbp.format(item.position.fxPpl)
+            else
+              strong.negative= gbp.format(item.position.fxPpl)
+            | , that&rsquo;s a total return of
+            |
+            - ret = item.position.ppl + item.position.fxPpl
+            if ret > 0
+              strong.positive= gbp.format(ret)
+            else
+              strong.negative= gbp.format(ret)
+            | .
+        details.info
+          summary JSON
+          pre= JSON.stringify(item, null, 4)
+  nav
+    a(href="/orders") View open orders
+    a(href="/") View balances
+            | .

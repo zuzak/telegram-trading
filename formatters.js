@@ -1,5 +1,6 @@
 const t212 = require('./t212.js')
 const instruments = require('./instruments.js')
+const markets = require('./markets.js')
 const config = require('./config.js')
 const _ = module.exports = {
   /**
@@ -48,7 +49,8 @@ const _ = module.exports = {
    */
   generateOrderSummary: async (order) => {
     const instrument = await instruments.getInstrumentByTicker(order.ticker)
-    const direction = Math.sign(order.quantity) === 1 ? 'BUY' : 'SELL'
+    const market = await markets.getMarketById(instrument.workingScheduleId)
+    const direction = Math.sign(order.quantity ?? order.filledQuantity) > 0 ? 'BUY' : 'SELL'
     // LOCAL" "UNCONFIRMED" "CONFIRMED" "NEW" "CANCELLING" "CANCELLED" "PARTIALLY_FILLED" "FILLED" "REJECTED" "REPLACING" "REPLACED"
     const verbs = {
       UNCONFIRMED: 'Unconfirmed',
@@ -72,9 +74,11 @@ const _ = module.exports = {
       return [
         `<b>${verbs[order.status]}</b>`,
         order.filledQuantity === order.orderedQuantity ? `${Math.abs(order.filledQuantity)}×` : `${order.filledQuantity} filled of ${Math.abs(order.orderedQuantity)}`,
-        `<code>${order.ticker}</code>`,
+        `<code>${order.shortName}</code>`,
         '@',
-        currencyFormat.format(order.fillPrice)
+        currencyFormat.format(order.fillPrice),
+        'on the',
+        market.name
       ].filter(Boolean).join(' ')
     }
 
@@ -84,6 +88,8 @@ const _ = module.exports = {
       `<code>${order.ticker}</code>`,
       order.type === 'MARKET' ? 'at next available price' : null,
       order.type === 'LIMIT' ? `at <code>${currencyFormat.format(order.limitPrice)}</code> or better` : null,
+      'on the',
+      market.name,
       order.timeValidity === 'DAY' ? 'if possible before the end of the trading day' : null
     ].filter(Boolean).join(' ')
   },
