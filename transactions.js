@@ -62,25 +62,25 @@ module.exports = async (client) => {
 
     console.log('Starting transaction', transactingInstrument)
 
-      if (transactingInstrument.currencyCode === 'GBX') {
-        // if denominated in pence multiply by 10 as a quick way to make it "US-like"
-        quantity = quantity * config.get('transactions.gbxConversion')
-      }
-      if (quantity < 0) { // if selling
-        console.log('We\'re selling')
-        try {
-          const existingHoldings = await instruments.getOpenPosition(transactingInstrument.ticker)
-          if (existingHoldings) {
-            limitPrice = existingHoldings.averagePrice
-            const multiplier = config.get('transactions.flipMultiplier')
-            if (multiplier) limitPrice = limitPrice + (limitPrice * multiplier)
-          }
-          console.log('Existing', existingHoldings)
-        } catch (e) {
-          console.log('Error with getting holding')
-          console.dir(e)
+    if (transactingInstrument.currencyCode === 'GBX') {
+      // if denominated in pence multiply by 10 as a quick way to make it "US-like"
+      quantity = quantity * config.get('transactions.gbxConversion')
+    }
+    if (quantity < 0) { // if selling
+      console.log('We\'re selling')
+      try {
+        const existingHoldings = await instruments.getOpenPosition(transactingInstrument.ticker)
+        if (existingHoldings) {
+          limitPrice = existingHoldings.averagePrice
+          const multiplier = config.get('transactions.flipMultiplier')
+          if (multiplier) limitPrice = limitPrice + (limitPrice * multiplier)
         }
+        console.log('Existing', existingHoldings)
+      } catch (e) {
+        console.log('Error with getting holding')
+        console.dir(e)
       }
+    }
 
     try {
       const order = await orders.placeOrder(transactingInstrument.ticker, quantity, limitPrice)

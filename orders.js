@@ -2,7 +2,7 @@ const t212 = require('./t212.js')
 const config = require('./config.js')
 const getTicker = require('./instruments.js').getInstrumentByTicker
 
-Error.stackTraceLimit = Infinity;
+Error.stackTraceLimit = Infinity
 
 const _ = module.exports = {
   /**
@@ -11,7 +11,7 @@ const _ = module.exports = {
    * (which may or may not be favourable)
    */
   placeMarketOrder: async (ticker, quantity) => {
-    const payload = {ticker, quantity}
+    const payload = { ticker, quantity }
     console.log('PLACING MARKET ORDER', payload)
     const res = await t212.post('equity/orders/market', payload)
     return res.data
@@ -32,7 +32,7 @@ const _ = module.exports = {
     return res.data
   },
   placeOrder: async (ticker, quantity, limitPrice, timeValidity, skipRecursion) => {
-    console.log('PLACING ORDER', {ticker, quantity, limitPrice, timeValidity, skipRecursion})
+    console.log('PLACING ORDER', { ticker, quantity, limitPrice, timeValidity, skipRecursion })
     try {
       let order
       if (limitPrice) {
@@ -44,12 +44,19 @@ const _ = module.exports = {
       return order
     } catch (e) {
       if (!e.response) throw e
+      if (e.response.status === 429) {
+        console.error('Rate limited on placing order...')
+        await new Promise(resolve => setTimeout(resolve, 5 * 1000))
+        console.error('...retrying order placement')
+        return _.placeOrder(ticker, quantity, limitPrice, timeValidity, skipRecursion)
+      }
+
       if (!e.response.data) throw e
       console.error('Error placing order', e.response.data)
 
       if (e.response.data.clarification !== 'InsufficientFreeForStocksException') {
         console.log('Spicy error')
-        throw e;
+        throw e
       } else {
         console.log('Not enough cash!')
 
@@ -68,13 +75,7 @@ const _ = module.exports = {
           quantity = instr.minTradeQuantity
           return await _.placeOrder(ticker, quantity.toPrecision(3), limitPrice, timeValidity, true) // the API enforces precision
         }
-        return await _.placeOrder(ticker, quantity.toPrecision(3)), limitPrice, timeValidity, false // the API enforces precision
-      }
-      if (e.response.status === 429) {
-        console.error('Rate limited on placing order...')
-        await new Promise(resolve => setTimeout(resolve, 5 * 1000))
-        console.error('...retrying order placement')
-        return _.placeMarketOrder(ticker, quantity)
+        return await _.placeOrder(ticker, quantity.toPrecision(3), limitPrice, timeValidity, false) // the API enforces precision
       }
     }
   },

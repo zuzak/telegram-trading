@@ -45,7 +45,7 @@ const pollPendingOrder = module.exports = async (messageObject, summary, oldOrde
   ].filter(Boolean).join('\r\n')
   console.log('OLDMSG', oldMessage)
   console.log('NEWMSG', text)
-  console.log('EQLMSG', oldMessage == text)
+  console.log('EQLMSG', oldMessage === text)
   if (oldMessage !== text) {
     await messageObject.edit(
       {
