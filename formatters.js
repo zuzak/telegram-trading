@@ -74,7 +74,7 @@ const _ = module.exports = {
       return [
         `<b>${verbs[order.status]}</b>`,
         order.filledQuantity === order.orderedQuantity ? `${Math.abs(order.filledQuantity)}×` : `${order.filledQuantity} filled of ${Math.abs(order.orderedQuantity)}`,
-        `<code>${order.shortName}</code>`,
+        `<code>${order.ticker}</code>`,
         '@',
         currencyFormat.format(order.fillPrice),
         'on the',
