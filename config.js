@@ -99,6 +99,11 @@ const config = convict({
       format: Number,
       doc: 'Minimum multipler above average buy price to set sell limit orders at',
       default: 0.0025
+    },
+    onlySellIfProfitable: {
+      format: Boolean,
+      doc: 'Whether to force all sell orders to be above the average price we bought for',
+      default: false
     }
   },
   webserver: {

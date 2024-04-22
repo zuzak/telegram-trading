@@ -66,7 +66,7 @@ module.exports = async (client) => {
       // if denominated in pence multiply by 10 as a quick way to make it "US-like"
       quantity = quantity * config.get('transactions.gbxConversion')
     }
-    if (quantity < 0) { // if selling
+    if (quantity < 0 && config.get('transactions.onlySellIfProfitable')) { // if selling
       console.log('We\'re selling')
       try {
         const existingHoldings = await instruments.getOpenPosition(transactingInstrument.ticker)
