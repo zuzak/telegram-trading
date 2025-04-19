@@ -81,6 +81,14 @@ const config = convict({
     }
   },
   transactions: {
+    excludedSecurities: {
+      doc: 'Securities to never attempt to buy',
+      format: Array,
+      default: [
+        'NICE_US_EQ',
+        'ONON_US_EQ'
+      ]
+    },
     reportingChannel: {
       format: Number,
       default: -1002122625485

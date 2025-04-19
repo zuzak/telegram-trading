@@ -60,6 +60,24 @@ module.exports = async (client) => {
     let limitPrice = null
     if (quantity === 0) return
 
+    if (
+      quantity > 0 &&
+      config.get('transactions.excludedSecurities').includes(transactingInstrument.ticker)
+    ) {
+      client.editMessage(
+        config.get('transactions.reportingChannel'),
+        {
+          message: (await transactionMessage).id,
+          linkPreview: false,
+          text: [
+            mentionSummary,
+            '🫷 <b>Not transacting:</b> security on ignore list'
+          ].join('\r\n')
+        }
+      )
+      return
+    }
+
     console.log('Starting transaction', transactingInstrument)
 
     if (transactingInstrument.currencyCode === 'GBX') {
