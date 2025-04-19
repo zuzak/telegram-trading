@@ -29,6 +29,10 @@ const config = convict({
     }
   },
   telegram: {
+    enabled: {
+      default: true,
+      format: Boolean
+    },
     apiId: {
       doc: 'Telegram API creds -- get this from my.telegram.org',
       format: Number,

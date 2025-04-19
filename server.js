@@ -8,6 +8,12 @@ const transactions = require('./transactions.js')
 const webserver = require('./webserver.js')
 
 const main = async () => {
+
+  webserver.listen(config.get('webserver.port'))
+  if (!config.get('telegram.enabled')) {
+    return
+  }
+
   const client = await require('./client.js')()
 
   commands(client)
