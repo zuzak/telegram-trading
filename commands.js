@@ -68,8 +68,10 @@ const commands = {
   },
   lobo: {
     desc: null,
-    cmd: (message) => {
+    cmd: async (message) => {
       if (Math.random() < 0.2) {
+        const delay = (x) => new Promise(resolve => setTimeout(resolve, x))
+        await delay(Math.random() * 1000 * 120)
         message.respond({ // like .reply but without a quote
           message: '/lobo',
           linkPreview: false
