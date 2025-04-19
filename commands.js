@@ -6,6 +6,8 @@ const config = require('./config.js')
 const { execSync } = require('node:child_process')
 const { readFileSync } = require('node:fs')
 
+let yumCount = 0
+
 module.exports = (client) => {
   client.addEventHandler(async (event) => {
     if (!event.message) return
@@ -44,8 +46,8 @@ const commands = {
   botsnack: {
     desc: 'Gives the bot a snack',
     cmd: () => {
-      console.log('Bot snack!')
-      return 'Yum!'
+      const excl = '!'
+      return `Yum${excl.repeat(yumCount++)}`
     }
   },
   accountcash: {
