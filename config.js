@@ -58,6 +58,10 @@ const config = convict({
       doc: 'The log level of the internal Telegram library',
       format: ['none', 'error', 'warn', 'info', 'debug'],
       default: 'debug'
+    },
+    inviteLink: {
+      format: String,
+      default: undefined
     }
   },
   sentiment: {

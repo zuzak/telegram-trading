@@ -2,6 +2,7 @@ const { Api } = require('telegram')
 const { getOrders } = require('./orders.js')
 const { NewMessage } = require('telegram/events')
 const formatters = require('./formatters.js')
+const config = require('./config.js')
 const { execSync } = require('node:child_process')
 const { readFileSync } = require('node:fs')
 
@@ -58,6 +59,10 @@ const commands = {
       const sentences = orders.map(async (x) => `${await formatters.generateOrderSummary(x)}`)
       return (await Promise.all(sentences)).join('\r\n')
     }
+  },
+  invitelink: {
+    desc: 'Gets an invite link for the bot announce channel',
+    cmd: () => config.get('telegram.inviteLink').toString()
   },
   lobo: {
     desc: null,
