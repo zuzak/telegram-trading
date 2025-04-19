@@ -90,6 +90,13 @@ const commands = {
         '</blockquote>'
       ].filter(Boolean).join('\r\n')
     }
+  },
+  clearcache: {
+    desc: 'Deletes the cache of aliased securities',
+    cmd: () => {
+      delete require.cache('./aliases.json')
+      return 'ok!'
+    }
   }
 }
 
