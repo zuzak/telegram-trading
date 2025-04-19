@@ -1,4 +1,7 @@
 {
+  "AmEx": "American Express",
+  "Amex": "American Express",
+
   "Maersk": "AP Moller Maersk",
 
   "BAE": "BAE Systems",
@@ -28,6 +31,10 @@
   "M&S": "Marks & Spencer",
 
   "Mazda": "Mazda Motor",
+
+  "GitHub": "Microsoft",
+
+  "Cadbury": "Mondelez International",
 
   "Nvidia": "NVIDIA",
 
