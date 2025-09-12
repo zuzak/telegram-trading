@@ -54,11 +54,11 @@ const _ = module.exports = {
       if (!e.response.data) throw e
       console.error('Error placing order', e.response.data)
 
-      if (e.response.data.clarification !== 'InsufficientFreeForStocksException') {
-        console.log('Spicy error')
-        throw e
-      } else {
-        console.log('Not enough cash!')
+      if (
+        (['InsufficientFreeForStocksException', 'SellingEquityNotOwned'].includes(e.response.data.clarification)) ||
+        (!e.response.data.clarification && e.response.status === 400)
+      ) {
+        console.log('Not enough cash! // Not enough stocks!')
 
         if (skipRecursion) {
           console.log('Not retrying')
@@ -66,17 +66,26 @@ const _ = module.exports = {
         }
 
         // wait a bit to avoid rate limiting
+        console.log('Waiting...')
         await new Promise(resolve => setTimeout(resolve, 5 * 1000))
+        console.log('       ... waited.')
 
         // try again with a smaller order quantity
-        quantity = quantity / 2
         const instr = await getTicker(ticker)
-        if (quantity < instr.minTradeQuantity) {
-          quantity = instr.minTradeQuantity
-          return await _.placeOrder(ticker, quantity.toPrecision(3), limitPrice, timeValidity, true) // the API enforces precision
+        // Math.floor(value / roundTo) * roundTo;
+        quantity = quantity / config.get('transactions.retryFactor')
+        if (instr.minTradeQuantity) {
+          quantity = Math.floor(quantity / instr.minTradeQuantity) * instr.minTradeQuantity
         }
+        if (quantity === 0) throw e
+    //  if (quantity <= instr.minTradeQuantity) {
+    //    quantity = instr.minTradeQuantity
+    //    return await _.placeOrder(ticker, quantity.toPrecision(3), limitPrice, timeValidity, true) // the API enforces precision
+    //  }
         return await _.placeOrder(ticker, quantity.toPrecision(3), limitPrice, timeValidity, false) // the API enforces precision
       }
+      console.log('Spicy error')
+      throw e
     }
   },
   getOrder: async (id) => {
