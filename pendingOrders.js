@@ -63,7 +63,6 @@ const pollPendingOrder = module.exports = async (messageObject, summary, oldOrde
     console.log(`Order ${order.id} now ${order.status}; no longer polling`)
     return
   }
-  //      (messageObject, summary, oldOrder, oldMessage, timeout) => {
 
   setTimeout(pollPendingOrder.bind(null, messageObject, summary, order, text, timeout), timeout)
 }

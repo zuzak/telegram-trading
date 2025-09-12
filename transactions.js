@@ -119,7 +119,7 @@ module.exports = async (client) => {
         if (x.clarification) return x.clarification
         if (x.errorMessage) return x.errorMessage
         if (x.code) return x.code
-        return JSON.stingify(x)
+        return JSON.stringify(x)
       })(err.response.data)
       if (reasons[reason]) reason = reasons[reason]
 

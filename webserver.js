@@ -16,7 +16,6 @@ try {
 
   app.get('/', async (req, res) => {
     if (cache.index) {
-      console.log('serving cache')
       return res.send(cache.index)
     }
     try {
@@ -26,7 +25,6 @@ try {
         pretty: true, compileDebug: true, cash, timeout
       })
       setTimeout(() => { cache.index = null }, timeout * 1000)
-      console.log('okc', cache.index)
       return res.send(cache.index)
     } catch (e) {
       console.log('error /')
