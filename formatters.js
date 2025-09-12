@@ -55,9 +55,9 @@ const _ = module.exports = {
     const verbs = {
       UNCONFIRMED: 'Unconfirmed',
       CONFIRMED: 'Confirmed',
-      NEW: direction === 'BUY' ? '⏳ Trying to buy' : '⏳ Trying to sell',
-      CANCELLING: direction === 'BUY' ? '🆑 Cancelling buy order of' : '🆑 Cancelling sell order of',
-      CANCELLED: direction === 'BUY' ? '🆑 Cancelled buy order of' : '🆑 Cancelled sell order of',
+      NEW: direction === 'BUY' ? '⏳ Buying' : '⏳ Selling',
+      CANCELLING: direction === 'BUY' ? '🆑 Cancelling buy order for' : '🆑 Cancelling sell order for',
+      CANCELLED: direction === 'BUY' ? '🆑 Cancelled buy order for' : '🆑 Cancelled sell order for',
       PARTIALLY_FILLED: direction === 'BUY' ? '⌛ Buying' : '⌛ Selling',
       FILLED: direction === 'BUY' ? '✅ Bought' : '❎ Sold',
       REJECTED: direction === 'BUY' ? '🆑 Rejected buy order:' : '🆑 Rejected sell order: ',
@@ -128,6 +128,9 @@ const _ = module.exports = {
       case 'emoji':
         return emoji
       case 'strapline':
+        if (cash.blocked) {
+          return `${emoji}${realisedProfitEmoji} TrashZone Trading (${fmt.format(cash.total)} total · ${fmt.format(cash.free)} free · ${fmt.format(cash.blocked)} blocked`
+        }
         return `${emoji}${realisedProfitEmoji} TrashZone Trading (${fmt.format(cash.total)} total · ${fmt.format(cash.free)} free)`
     }
     return cash

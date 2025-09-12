@@ -43,6 +43,11 @@ try {
     const augmentedOrders = await pendingOrders.map(async (order) => {
       const instrument = await instruments.getInstrumentByTicker(order.ticker)
       const market = await markets.getMarketById(instrument.workingScheduleId)
+      market.workingSchedules = market.workingSchedules.filter(
+        (x) => {
+          return x.id === instrument.workingScheduleId
+        }
+      )
       return { order, instrument, market }
     })
 

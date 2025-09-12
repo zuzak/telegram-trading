@@ -2,27 +2,26 @@ extends skeleton.pug
 block body
   if cash
     - const currency = new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP', currencySign: 'accounting'})
+
     h1(style="text-align: center")
      span.subtitle Account total:
      |
      |
      = currency.format(cash.total)
-     small
-       if (cash.result + cash.ppl) > 0
-         strong.positive
-          | &#9650;
-          = currency.format(cash.result + cash.ppl)
-       else
-         strong.negative
-          | &#9660;
-          = currency.format(cash.result + cash.ppl)
     section
       h2.invested
-        span= currency.format(cash.invested)
+        = currency.format(cash.invested)
         |
         | invested
-      p
-        | This is how much money our stocks and shares are worth.
+      p 
+        | We spent
+        |
+        = currency.format(cash.invested)
+        |
+        | on investments that are now worth
+        |
+        = currency.format(cash.invested + cash.ppl)
+        | .
       p
         | That&rsquo;s
         |
@@ -45,9 +44,14 @@ block body
           = currency.format(cash.free)
           |
           | free
-      p.
-        This is how much we&rsquo;ve got as cash in our account.
-        Some of this might have been earmarked for future orders.
+      p
+        | This is how much we've got as cash in our account.
+        if cash.blocked
+          | There's an extra
+          |
+          = currency.format(cash.blocked)
+          |
+          | that has been earmarked for future orders.
       p
         | Our realised result is
         |

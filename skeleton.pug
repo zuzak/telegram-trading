@@ -1,3 +1,4 @@
+doctype html
 html
   head
     meta(name="viewport",content="width=device-width, initial-scale=1")
@@ -5,18 +6,74 @@ html
       meta(http-equiv="refresh",content=timeout)
     script(src="https://telegram.org/js/telegram-web-app.js")
     style.
+
+
+      /* garish colours courtesy of https://huemint.com/website-2/ */
+      :root {
+        --acc1: #74c202;
+        --acc2: #fcb116;
+        --bg: #fff;
+        --fg: #6546ae;
+
+        --bg2: #f5f5f6;
+
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --fg: #ff9d2e;
+          --bg: #2e0242;;
+          --acc1: #34c8aa;
+          --acc2: #f76996;
+          --bg2: #360c49;
+        }
+      }
+
+      :root {
+        --negative-color: var(--tg-theme-destructive-text-color, var(--acc2));
+        --secondary-bg-color: var(--tg-theme-secondary-bg-color, var(--bg2));
+        --section-bg-color: var(--tg-theme-section-color, var(--bg));
+        --accent-color: var(--tg-theme-accent-text-color, var(--acc1));
+        --text-color: var(--tg-theme-text-color, var(--fg));
+        --button-bgcolor: var(--tg-theme-button-color, var(--acc1));
+        --button-text-color: var(--tg-theme-button-text-color, var(--bg));
+        --hint-color: var(--tg-theme-hint-color, var(--fg));
+
+        --subtitle-text-color: var(--tg-theme-subtitle-text-color, inherit);
+        --section-header-text-color: var(--tg-theme-section-header-text-color, inherit);
+      }
+
+
+      main {
+        columns: 450px;
+      } 
+      html {
+        scroll-behaviour: smooth;
+      }
+      section {
+        break-inside: avoid;
+      }
+
+      section:target {
+        outline: 0.5em solid var(--accent-color)
+      }
+
+
       ul {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
         margin-bottom: 3em;
         text-align: left;
+        padding-left: 0;
+        min-height: 75vh;
       }
+
       li {
-        display: inline;
         text-align: center;
-        list-style-type: none
-        flex: 1 1 0;
+        list-style-type: none;
+        flex: 1;
+        padding: 0.2em;
         margin: 0.2em;
       }
       li a {
@@ -26,27 +83,30 @@ html
       }
 
       html {
-        background-color: var(--tg-theme-secondary-bg-color);
-        color: var(--tg-theme-text-color);
+        background-color: var(--secondary-bg-color);
+        color: var(--text-color);
         font-family: sans-serif;
       }
       section {
         border-left: 1em solid transparent;
       }
       /* section.positive {
-        border-left: 1em solid var(--tg-theme-accent-text-color)
+        border-left: 1em solid var(--accent-color);)
       } */
       li.negative {
-        background-color: var(--tg-theme-destructive-text-color);
+        background-color: var(--negative-color);
       }
       li.positive{
-        background-color: var(--tg-theme-accent-text-color);
+        border: 1px solid var(--accent-color);
+      }
+      li.positive a {
+        color: var(--accent-color);
       }
       section.negative {
-        border-left: 1em solid var(--tg-theme-destructive-text-color)
+        border-left: 1em solid var(--negative-color);
       }
       pre {
-        background-color: var(--tg-theme-secondary-bg-color);
+        background-color: var(--secondary-bg-color);
         text-align: left;
         padding: 1em;
       }
@@ -54,12 +114,8 @@ html
       summary {
         text-align: left;
       }
-
-      tr {
-        background-color: var(--tg-theme-bg-color)
-      }
       section {
-        background-color: var(--tg-theme-section-bg-color);
+        background-color: var(--section-bg-color);
         border-radius: 1em;
         padding: 1em;
         margin: 1em;
@@ -67,20 +123,20 @@ html
         min-height: 7em;
       }
       section h2 {
-        color: var(--tg-theme-section-header-text-color)
+        color: var(--section-header-text-color)
       }
       .subtitle {
-        color: var(--tg-theme-subtitle-text-color)
+        color: var(--subtitle-text-color)
       }
       section h2 .symbol {
-        color: var(--tg-theme-subtitle-text-color)
+        color: var(--subtitle-text-color)
         clear: left;
       }
       strong {
-        color: var(--tg-theme-accent-text-color)
+        color: var(--accent-color)
       }
       strong.negative {
-        color: var(--tg-theme-destructive-text-color)
+        color: var(--negative-color)
       }
       .img {
         margin-right: 1em;
@@ -92,21 +148,25 @@ html
       .img div {
         margin-top: 0.5em;
         padding: 0.5em;
-        color: var(--tg-theme-section-tg-color);
-        background-color: var(--tg-theme-accent-text-color)
+        color: var(--section-bg-color);
+        background-color: var(---accent-color)
       }
       .info {
-        color: var(--tg-theme-hint-color);
+        color: var(--hint-color);
         font-family: monospace;
       }
       a {
-        background-color: var(--tg-theme-button-color);
-        color: var(--tg-theme-button-text-color);
+        background-color: var(--button-bgcolor);
+        color: var(--button-text-color);
         padding: 1em;
         margin: 1em;
         text-decoration: none;
         display: block;
       }
+      .mono {
+        text-align: right;
+        font-family: monospace;
+      }
 
-body
-  block body
+  body
+    block body

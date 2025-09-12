@@ -130,7 +130,8 @@ module.exports = async (client) => {
           linkPreview: false,
           text: [
             mentionSummary,
-            `❌ <b>Tried to ${direction}</b> but ${reason}`
+            `❌ <b>Tried to ${direction}</b> but ${reason}`,
+            `<pre><code language="json">${err.config.data}</code></pre>`
           ].join('\r\n')
         }
       )

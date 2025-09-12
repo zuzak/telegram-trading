@@ -31,5 +31,6 @@ block body
             strong.limitPrice= (new Intl.NumberFormat('en-GB', {style: 'currency', currency: item.instrument.currencyCode, currencySign: 'accounting'})).format(item.order.limitPrice)
             |
             | or better
-      p.info
-        span.isin= item.instrument.isin
+      details.info
+        summary.isin= item.instrument.isin
+        pre= JSON.stringify(item, null, 4)

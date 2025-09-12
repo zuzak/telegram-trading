@@ -120,6 +120,11 @@ const config = convict({
       format: Boolean,
       doc: 'Whether to force all sell orders to be above the average price we bought for',
       default: false
+    },
+    retryFactor: {
+      format: Number,
+      doc: 'How much to divide the quantity by when retrying due to lack of funds',
+      default: 2
     }
   },
   webserver: {

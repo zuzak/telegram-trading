@@ -4,11 +4,13 @@ block body
     for item in items
       if item.position.ppl + item.position.fxPpl > 0
         li.info.positive
+          img(src="https://trading212equities.s3.eu-central-1.amazonaws.com/" + item.instrument.ticker + ".png",alt="")
           a(href="#" + item.instrument.ticker)= item.instrument.shortName
       else
         li.info.negative
+          img(src="https://trading212equities.s3.eu-central-1.amazonaws.com/" + item.instrument.ticker + ".png",alt="")
           a(href="#" + item.instrument.ticker)= item.instrument.shortName
-  for item in items
+  main: for item in items
     - currency = (new Intl.NumberFormat('en-GB', {style: 'currency', currency: item.instrument.currencyCode, currencySign: 'accounting'}))
     - gbp = (new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'GBP', currencySign: 'accounting'}))
     - ret = item.position.ppl + item.position.fxPpl
@@ -32,14 +34,15 @@ block body
         | share
         if item.position.quantity !== 1
           | s
-        |
-        | on the
-        |
-        span.market= item.market.name
+        if item.market
+          |
+          | on the
+          |
+          span.market= item.market.name
         |
         | which we bought
         |
-        if item.position.frontend !== 'SYSTEM'
+        if item.position.frontend !== 'SYSTEM' && item.position.frontend !== 'AUTOINVEST'
           strong manually
         |
         | for
