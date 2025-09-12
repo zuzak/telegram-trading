@@ -144,7 +144,7 @@ module.exports = async (client) => {
         if (x.code) return x.code
         return JSON.stringify(x)
       })(err.response.data)
-      if (reason = '""') reason = err.response.statusText
+      if (reason === '""') reason = err.response.statusText
       if (reasons[reason]) reason = reasons[reason]
 
       client.editMessage(
