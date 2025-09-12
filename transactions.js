@@ -7,6 +7,9 @@ const formatters = require('./formatters.js')
 const config = require('./config.js')
 const pendingOrders = require('./pendingOrders.js')
 
+const fs = require('fs')
+const stream = fs.createWriteStream(config.get('logging.file'), { flags: 'a' })
+
 module.exports = async (client) => {
   client.addEventHandler(async (event) => {
     client.invoke(
@@ -32,6 +35,24 @@ module.exports = async (client) => {
       senti
     )
 
+    let ircNick = username
+    if (msg.viaBotId) {
+      if (msg.viaBotId === '5450586675') {
+        ircNick = username + '|doovlabot'
+      } else {
+        ircNick = username + '|' + msg.viaBotId
+      }
+    }
+
+    if (config.get('logging.enabled')) {
+      for (const line of msg.message.split('\n')) {
+        stream.write([
+          (new Date(msg.date * 1000)).toISOString().replace('T', ' ').replace(/\..*$/, ''),
+          ircNick,
+          line + '\n'
+        ].join('\t'))
+      }
+    }
     const transactingInstrument = orders.selectInstrument(await possibleInstruments)
     if (!transactingInstrument) return
 

@@ -11,6 +11,18 @@ const isBase64 = (value) => {
 }
 
 const config = convict({
+  logging: {
+    enabled: {
+      doc: 'Whether to enable logging messages to a log, IRC style',
+      default: false,
+      format: Boolean
+    },
+    file: {
+      doc: 'Which file to log to',
+      default: 'trashzone.log',
+      format: String
+    }
+  },
   env: {
     doc: 'The application environment',
     default: 'development',
