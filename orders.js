@@ -51,7 +51,7 @@ const _ = module.exports = {
         return _.placeOrder(ticker, quantity, limitPrice, timeValidity, skipRecursion)
       }
 
-      if (!e.response.data) throw e
+      if (e.response.data === null) throw e
       console.error('Error placing order', e.response.data)
 
       if (

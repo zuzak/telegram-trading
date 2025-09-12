@@ -6,6 +6,9 @@ const orders = require('./orders.js')
 const instruments = require('./instruments.js')
 const pug = require('pug')
 
+instruments.getInstruments()
+orders.getOrders()
+
 try {
   const cache = { orders: null, index: null }
 

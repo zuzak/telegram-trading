@@ -34,9 +34,8 @@ const main = async () => {
       setTimeout(updateCash, 1000 * 60 * 5)
     }
   }
-  updateCash()
 
-  webserver.listen(config.get('webserver.port'))
+  updateCash()
 }
 
 main()

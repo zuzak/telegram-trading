@@ -18,7 +18,9 @@ module.exports = async (client) => {
     const msg = event.message
     const sender = await msg.getSender()
 
-    const possibleInstruments = instruments.searchStringForInstruments(msg.message)
+    const possibleInstruments = instruments.searchStringForInstruments(
+      msg.message.replace(/[‘’]/g, "'")
+    )
     const senti = sentiment.getSentiment(msg.message)
 
     const username = formatters.formatUsername(sender)
@@ -37,7 +39,7 @@ module.exports = async (client) => {
 
     const transactionMessage = client.sendMessage(
       config.get('transactions.reportingChannel'),
-      { message: mentionSummary + '\r\n🤔 Processing…', linkPreview: false }
+      { message: mentionSummary /* + '\r\n🤔 Processing…' */, linkPreview: false }
     )
 
     if (Math.abs(senti) < config.get('transactions.sentimentThreshold')) {
@@ -121,6 +123,7 @@ module.exports = async (client) => {
         if (x.code) return x.code
         return JSON.stringify(x)
       })(err.response.data)
+      if (reason = '""') reason = err.response.statusText
       if (reasons[reason]) reason = reasons[reason]
 
       client.editMessage(
