@@ -74,14 +74,19 @@ const _ = module.exports = {
         const instr = await getTicker(ticker)
         // Math.floor(value / roundTo) * roundTo;
         quantity = quantity / config.get('transactions.retryFactor')
+        if (!instr.minTradeQuantity) instr.minTradeQuantity = 0.001
         if (instr.minTradeQuantity) {
           quantity = Math.floor(quantity / instr.minTradeQuantity) * instr.minTradeQuantity
         }
         if (quantity === 0) throw e
-    //  if (quantity <= instr.minTradeQuantity) {
-    //    quantity = instr.minTradeQuantity
-    //    return await _.placeOrder(ticker, quantity.toPrecision(3), limitPrice, timeValidity, true) // the API enforces precision
-    //  }
+        if (quantity > 0 && Math.abs(quantity) <= instr.minTradeQuantity) {
+          quantity = instr.minTradeQuantity
+          return await _.placeOrder(ticker, quantity.toPrecision(3), limitPrice, timeValidity, true) // the API enforces precision
+        }
+        if (quantity < 0 && Math.abs(quantity) <= instr.minTradeQuantity) {
+          quantity = 0 - instr.minTradeQuantity
+          return await _.placeOrder(ticker, quantity.toPrecision(3), limitPrice, timeValidity, false) // the API enforces precision
+        }
         return await _.placeOrder(ticker, quantity.toPrecision(3), limitPrice, timeValidity, false) // the API enforces precision
       }
       console.log('Spicy error')
