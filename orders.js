@@ -62,6 +62,16 @@ const _ = module.exports = {
 
         if (skipRecursion) {
           console.log('Not retrying')
+          if (e.response.status === 400) {
+            if (quantity > 0) {
+              e.response.data = {}
+              e.response.data.clarification = 'InsufficientFreeForStocksException'
+            }
+            if (quantity < 0) {
+              e.response.data = {}
+              e.response.data.clarification = 'SellingEquityNotOwned'
+            }
+          }
           throw e
         }
 
